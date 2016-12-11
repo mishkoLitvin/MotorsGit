@@ -1,0 +1,1 @@
+"./F2806x_CodeStartBranch.obj" "./clk.obj" "./gpio.obj" "./main.obj" "./memCopy.obj" "./pid_reg3.obj" "../F28069.cmd" -l"libc.a" 
