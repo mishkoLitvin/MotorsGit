@@ -220,6 +220,7 @@ __interrupt void cpu_timer0_isr(void)
 					/motor0.polesCount/2.;
 			motor1.phaseTime += ((alpha*posCoef-motor0.phasePosition)/180.*PI)
 					/motor0.polesCount/2.;
+			SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV=1;
 		}
 	}
 	else
@@ -422,6 +423,7 @@ __interrupt void cpu_timer1_isr(void)
 									saadFrame.DATA.bit.DATA_H = sciRxC[2];
 
 									motor0.phasePosition = (float) (saadFrame.DATA.all*0.02);
+									SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV = 0;
 									setSci = 1;
 									saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
 									if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
