@@ -65,11 +65,6 @@
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/head/spiDriverMAX.h</locationURI>
 		</link>
-		<link>
-			<name>targetConfigs/TMS320F28069_xds100v2.ccxml</name>
-			<type>1</type>
-			<locationURI>MW_INSTALL_DIR/sw/ide/ccs/ccs5/targetConfigs/TMS320F28069_xds100v2.ccxml</locationURI>
-		</link>
 	</linkedResources>
 	<variableList>
 		<variable>
