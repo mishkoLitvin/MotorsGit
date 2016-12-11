@@ -1,0 +1,1415 @@
+<?xml version="1.0" encoding="windows-1251" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="C:/ti/ccsv6/ccs_base/scripting/examples/loadti//DefaultStylesheet.xsl"?>
+<log>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778334</millis>
+  <sequence>6</sequence>
+  <logger>com.ti</logger>
+  <level>FINER</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>traceSetFileLevel</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778336</millis>
+  <sequence>7</sequence>
+  <logger>com.ti</logger>
+  <level>INFO</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>traceWrite</method>
+  <thread>10</thread>
+  <message>
+***** DSS Generic Loader *****
+</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778363</millis>
+  <sequence>8</sequence>
+  <logger>com.ti</logger>
+  <level>INFO</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>traceWrite</method>
+  <thread>10</thread>
+  <message>START: 14:19:38 GMT+0300 (EEST)
+</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778365</millis>
+  <sequence>9</sequence>
+  <logger>com.ti</logger>
+  <level>INFO</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>traceWrite</method>
+  <thread>10</thread>
+  <message>Configuring Debug Server for specified target...</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778383</millis>
+  <sequence>10</sequence>
+  <logger>com.ti</logger>
+  <level>FINER</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>getServer</method>
+  <thread>10</thread>
+  <message>ENTRY sServerName: DebugServer.1</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778383</millis>
+  <sequence>11</sequence>
+  <logger>com.ti</logger>
+  <level>FINER</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>getServer</method>
+  <thread>10</thread>
+  <message>Getting definition for: DebugServer.1</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778395</millis>
+  <sequence>12</sequence>
+  <logger>com.ti</logger>
+  <level>FINER</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>getServer</method>
+  <thread>10</thread>
+  <message>Constructing server</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778399</millis>
+  <sequence>13</sequence>
+  <logger>com.ti</logger>
+  <level>FINER</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>getServer</method>
+  <thread>10</thread>
+  <message>RETURN com.ti.debug.engine.scripting.DebugServer@8bdcd2</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778400</millis>
+  <sequence>14</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer</class>
+  <method>setConfig</method>
+  <thread>10</thread>
+  <message>ENTRY sConfigurationFile: ..\targetConfigs\sau510Conf.ccxml</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778401</millis>
+  <sequence>15</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer</class>
+  <method>setConfig</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778401</millis>
+  <sequence>16</sequence>
+  <logger>com.ti</logger>
+  <level>INFO</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>traceWrite</method>
+  <thread>10</thread>
+  <message>Done</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778401</millis>
+  <sequence>17</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer</class>
+  <method>debuggerOpen</method>
+  <thread>10</thread>
+  <message>ENTRY sBoardName: * sCPUName: *</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778402</millis>
+  <sequence>18</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer</class>
+  <method>start</method>
+  <thread>10</thread>
+  <message>ENTRY</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778403</millis>
+  <sequence>19</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer</class>
+  <method>start</method>
+  <thread>10</thread>
+  <message>Firing: onServerStarting()</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778404</millis>
+  <sequence>20</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer</class>
+  <method>start</method>
+  <thread>10</thread>
+  <message>Connecting to XPCOM DebugServer</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778550</millis>
+  <sequence>21</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer</class>
+  <method>start</method>
+  <thread>10</thread>
+  <message>Initializing DebugServer using specified configuration: "C:\Users\Mishko Lytvyn\Dropbox\WORK\CCSworkspace\motorsPro\motors\targetConfigs\sau510Conf.ccxml"</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:38</date>
+  <millis>1477480778551</millis>
+  <sequence>22</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer$Callback</class>
+  <method>waitUntil</method>
+  <thread>10</thread>
+  <message>ENTRY com.ti.ccstudio.scripting.environment.ScriptingEnvironment@10ab323 timeout: infinite</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779250</millis>
+  <sequence>23</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugSession</class>
+  <method>&lt;init&gt;</method>
+  <thread>11</thread>
+  <message>CPU Name: C28xx</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779250</millis>
+  <sequence>24</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugSession</class>
+  <method>&lt;init&gt;</method>
+  <thread>11</thread>
+  <message>PartNum: TMS320F28069</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779251</millis>
+  <sequence>25</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugSession</class>
+  <method>&lt;init&gt;</method>
+  <thread>11</thread>
+  <message>Family: 320</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779251</millis>
+  <sequence>26</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugSession</class>
+  <method>&lt;init&gt;</method>
+  <thread>11</thread>
+  <message>SubFamily/MajorISA: 28</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779251</millis>
+  <sequence>27</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugSession</class>
+  <method>&lt;init&gt;</method>
+  <thread>11</thread>
+  <message>Revision/MinorISA: 127</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779251</millis>
+  <sequence>28</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugSession</class>
+  <method>&lt;init&gt;</method>
+  <thread>11</thread>
+  <message>Platform: EMULATOR</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779252</millis>
+  <sequence>29</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugSession</class>
+  <method>&lt;init&gt;</method>
+  <thread>11</thread>
+  <message>Processor ID: 1342219256</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779379</millis>
+  <sequence>30</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugSession</class>
+  <method>&lt;init&gt;</method>
+  <thread>11</thread>
+  <message>CPU Name: CLA_0</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779380</millis>
+  <sequence>31</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugSession</class>
+  <method>&lt;init&gt;</method>
+  <thread>11</thread>
+  <message>PartNum: TMS320F28069</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779380</millis>
+  <sequence>32</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugSession</class>
+  <method>&lt;init&gt;</method>
+  <thread>11</thread>
+  <message>Family: 192</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779380</millis>
+  <sequence>33</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugSession</class>
+  <method>&lt;init&gt;</method>
+  <thread>11</thread>
+  <message>SubFamily/MajorISA: 20</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779381</millis>
+  <sequence>34</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugSession</class>
+  <method>&lt;init&gt;</method>
+  <thread>11</thread>
+  <message>Revision/MinorISA: 6</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779381</millis>
+  <sequence>35</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugSession</class>
+  <method>&lt;init&gt;</method>
+  <thread>11</thread>
+  <message>Platform: EMULATOR</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779381</millis>
+  <sequence>36</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugSession</class>
+  <method>&lt;init&gt;</method>
+  <thread>11</thread>
+  <message>Processor ID: 805339184</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779383</millis>
+  <sequence>37</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer$Callback</class>
+  <method>waitUntil</method>
+  <thread>10</thread>
+  <message>RETURN com.ti.ccstudio.scripting.environment.ScriptingEnvironment@10ab323</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779383</millis>
+  <sequence>38</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer</class>
+  <method>start</method>
+  <thread>10</thread>
+  <message>Firing: onServerStarted()</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779383</millis>
+  <sequence>39</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer</class>
+  <method>start</method>
+  <thread>10</thread>
+  <message>Searching for devices</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779383</millis>
+  <sequence>40</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer</class>
+  <method>listDevices</method>
+  <thread>10</thread>
+  <message>ENTRY</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779383</millis>
+  <sequence>41</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer</class>
+  <method>listDevices</method>
+  <thread>10</thread>
+  <message>Found debuggable device: Sauris SAU510-USB Iso Plus v.2 Emulator_0/C28xx</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779384</millis>
+  <sequence>42</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer</class>
+  <method>listDevices</method>
+  <thread>10</thread>
+  <message>Found debuggable device: Sauris SAU510-USB Iso Plus v.2 Emulator_0/CLA_0</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779384</millis>
+  <sequence>43</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer</class>
+  <method>listDevices</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779384</millis>
+  <sequence>44</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer</class>
+  <method>start</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779545</millis>
+  <sequence>45</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer$SessionFactory</class>
+  <method>open</method>
+  <thread>10</thread>
+  <message>Initializing RTDX: "RTDXServer.1"</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779546</millis>
+  <sequence>46</sequence>
+  <logger>com.ti</logger>
+  <level>FINER</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>getServer</method>
+  <thread>10</thread>
+  <message>ENTRY sServerName: RTDXServer.1</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779546</millis>
+  <sequence>47</sequence>
+  <logger>com.ti</logger>
+  <level>FINER</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>getServer</method>
+  <thread>10</thread>
+  <message>Getting definition for: RTDXServer.1</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779547</millis>
+  <sequence>48</sequence>
+  <logger>com.ti</logger>
+  <level>FINER</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>getServer</method>
+  <thread>10</thread>
+  <message>Constructing server</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779547</millis>
+  <sequence>49</sequence>
+  <logger>com.ti</logger>
+  <level>FINER</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>getServer</method>
+  <thread>10</thread>
+  <message>RETURN com.ti.debug.engine.scripting.RTDXServer@b3f9b8</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779547</millis>
+  <sequence>50</sequence>
+  <logger>com.ti.debug.engine.scripting.RTDXServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.RTDXServer</class>
+  <method>openSession</method>
+  <thread>10</thread>
+  <message>ENTRY sDebugSession: Sauris SAU510-USB Iso Plus v.2 Emulator_0/C28xx</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779547</millis>
+  <sequence>51</sequence>
+  <logger>com.ti</logger>
+  <level>FINER</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>getServer</method>
+  <thread>10</thread>
+  <message>ENTRY sServerName: DebugServer.1</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779547</millis>
+  <sequence>52</sequence>
+  <logger>com.ti</logger>
+  <level>FINER</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>getServer</method>
+  <thread>10</thread>
+  <message>Getting cached server: DebugServer.1</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779547</millis>
+  <sequence>53</sequence>
+  <logger>com.ti</logger>
+  <level>FINER</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>getServer</method>
+  <thread>10</thread>
+  <message>RETURN com.ti.debug.engine.scripting.DebugServer@8bdcd2</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779548</millis>
+  <sequence>54</sequence>
+  <logger>com.ti.debug.engine.scripting.RTDXServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.RTDXServer</class>
+  <method>openSession</method>
+  <thread>10</thread>
+  <message>ENTRY session: com.ti.debug.engine.scripting.DebugSession@1cfb802</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779548</millis>
+  <sequence>55</sequence>
+  <logger>com.ti.debug.engine.scripting.RTDXServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.RTDXServer</class>
+  <method>openSession</method>
+  <thread>10</thread>
+  <message>RETURN com.ti.debug.engine.scripting.RTDXSession@39c8c1</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779548</millis>
+  <sequence>56</sequence>
+  <logger>com.ti.debug.engine.scripting.RTDXServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.RTDXServer</class>
+  <method>openSession</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779548</millis>
+  <sequence>57</sequence>
+  <logger>com.ti.debug.engine.scripting.DebugServer</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.DebugServer</class>
+  <method>debuggerOpen</method>
+  <thread>10</thread>
+  <message>RETURN Sauris SAU510-USB Iso Plus v.2 Emulator_0/C28xx</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779549</millis>
+  <sequence>58</sequence>
+  <logger>com.ti.debug.engine.scripting.Options</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Options</class>
+  <method>setString</method>
+  <thread>10</thread>
+  <message>ENTRY ID: FileIODefaultDirectory Value: undefined</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779560</millis>
+  <sequence>59</sequence>
+  <logger>com.ti.debug.engine.scripting.Options</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Options</class>
+  <method>setString</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779560</millis>
+  <sequence>60</sequence>
+  <logger>com.ti</logger>
+  <level>INFO</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>traceWrite</method>
+  <thread>10</thread>
+  <message>TARGET: Sauris SAU510-USB Iso Plus v.2 Emulator_0</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779561</millis>
+  <sequence>61</sequence>
+  <logger>com.ti</logger>
+  <level>INFO</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>traceWrite</method>
+  <thread>10</thread>
+  <message>Connecting to target...</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779563</millis>
+  <sequence>62</sequence>
+  <logger>com.ti.debug.engine.scripting.Target</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Target</class>
+  <method>connect</method>
+  <thread>10</thread>
+  <message>ENTRY</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779563</millis>
+  <sequence>63</sequence>
+  <logger>com.ti.debug.engine.scripting.Target</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Target</class>
+  <method>isConnected</method>
+  <thread>10</thread>
+  <message>ENTRY</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779564</millis>
+  <sequence>64</sequence>
+  <logger>com.ti.debug.engine.scripting.Target</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Target</class>
+  <method>isConnected</method>
+  <thread>10</thread>
+  <message>Target is not connected</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779564</millis>
+  <sequence>65</sequence>
+  <logger>com.ti.debug.engine.scripting.Target</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Target</class>
+  <method>isConnected</method>
+  <thread>10</thread>
+  <message>RETURN false</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779564</millis>
+  <sequence>66</sequence>
+  <logger>com.ti.debug.engine.scripting.Target</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Target</class>
+  <method>connect</method>
+  <thread>10</thread>
+  <message>Requesting target connect</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779566</millis>
+  <sequence>67</sequence>
+  <logger>com.ti.debug.engine.scripting.Target</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Target$OnConnectedListener</class>
+  <method>waitUntil</method>
+  <thread>10</thread>
+  <message>ENTRY timeout: infinite</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779935</millis>
+  <sequence>68</sequence>
+  <logger>com.ti.debug.engine.scripting.Target</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.AbstractListener</class>
+  <method>log</method>
+  <thread>12</thread>
+  <message>Target is now connected</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779935</millis>
+  <sequence>69</sequence>
+  <logger>com.ti.debug.engine.scripting.Target</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Target$OnConnectedListener</class>
+  <method>waitUntil</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779935</millis>
+  <sequence>70</sequence>
+  <logger>com.ti.debug.engine.scripting.Target</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Target</class>
+  <method>isConnected</method>
+  <thread>10</thread>
+  <message>ENTRY</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779935</millis>
+  <sequence>71</sequence>
+  <logger>com.ti.debug.engine.scripting.Target</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Target</class>
+  <method>isConnected</method>
+  <thread>10</thread>
+  <message>Target is connected</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779936</millis>
+  <sequence>72</sequence>
+  <logger>com.ti.debug.engine.scripting.Target</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Target</class>
+  <method>isConnected</method>
+  <thread>10</thread>
+  <message>RETURN true</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779936</millis>
+  <sequence>73</sequence>
+  <logger>com.ti.debug.engine.scripting.Target</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Target</class>
+  <method>connect</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779940</millis>
+  <sequence>74</sequence>
+  <logger>com.ti</logger>
+  <level>INFO</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>traceWrite</method>
+  <thread>10</thread>
+  <message>Loading .\motors.out</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779942</millis>
+  <sequence>75</sequence>
+  <logger>com.ti.debug.engine.scripting.Memory</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Memory</class>
+  <method>loadProgram</method>
+  <thread>10</thread>
+  <message>ENTRY sFileName: .\motors.out</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779943</millis>
+  <sequence>76</sequence>
+  <logger>com.ti.debug.engine.scripting.Memory</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Memory</class>
+  <method>load</method>
+  <thread>10</thread>
+  <message>Requesting program load</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:39</date>
+  <millis>1477480779955</millis>
+  <sequence>77</sequence>
+  <logger>com.ti.debug.engine.scripting.Memory</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.APIContainer$OnCompleteWithErrorInfo</class>
+  <method>waitUntil</method>
+  <thread>10</thread>
+  <message>ENTRY timeout: infinite</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780332</millis>
+  <sequence>78</sequence>
+  <logger>com.ti.debug.engine.scripting.RTDXSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.RTDXSession</class>
+  <method>setupBeforeRun</method>
+  <thread>13</thread>
+  <message>ENTRY emuPin: 0</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780333</millis>
+  <sequence>79</sequence>
+  <logger>com.ti.debug.engine.scripting.RTDXSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.RTDXSession</class>
+  <method>getConfigMode</method>
+  <thread>13</thread>
+  <message>ENTRY</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780339</millis>
+  <sequence>80</sequence>
+  <logger>com.ti.debug.engine.scripting.RTDXSession</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.RTDXSession</class>
+  <method>getConfigMode</method>
+  <thread>13</thread>
+  <message>RETURN Failure</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780354</millis>
+  <sequence>81</sequence>
+  <logger>com.ti.debug.engine.scripting.Memory</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.APIContainer$OnCompleteWithErrorInfo</class>
+  <method>waitUntil</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780354</millis>
+  <sequence>82</sequence>
+  <logger>com.ti.debug.engine.scripting.Memory</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Memory</class>
+  <method>load</method>
+  <thread>10</thread>
+  <message>Program load successful</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780354</millis>
+  <sequence>83</sequence>
+  <logger>com.ti.debug.engine.scripting.Options</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Options</class>
+  <method>getBoolean</method>
+  <thread>10</thread>
+  <message>ENTRY ID: AutoRunToLabelOnRestart</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780360</millis>
+  <sequence>84</sequence>
+  <logger>com.ti.debug.engine.scripting.Options</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Options</class>
+  <method>getBoolean</method>
+  <thread>10</thread>
+  <message>RETURN true</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780364</millis>
+  <sequence>85</sequence>
+  <logger>com.ti.debug.engine.scripting.Memory</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Memory</class>
+  <method>loadProgram</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780364</millis>
+  <sequence>86</sequence>
+  <logger>com.ti</logger>
+  <level>INFO</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>traceWrite</method>
+  <thread>10</thread>
+  <message>Done</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780383</millis>
+  <sequence>87</sequence>
+  <logger>com.ti</logger>
+  <level>INFO</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>traceWrite</method>
+  <thread>10</thread>
+  <message>Target running...</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780384</millis>
+  <sequence>88</sequence>
+  <logger>com.ti</logger>
+  <level>FINER</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>setScriptTimeout</method>
+  <thread>10</thread>
+  <message>ENTRY nTimeout: -1</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780384</millis>
+  <sequence>89</sequence>
+  <logger>com.ti</logger>
+  <level>FINER</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>setScriptTimeout</method>
+  <thread>10</thread>
+  <message>Timeout is infinite</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780384</millis>
+  <sequence>90</sequence>
+  <logger>com.ti</logger>
+  <level>FINER</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>setScriptTimeout</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780385</millis>
+  <sequence>91</sequence>
+  <logger>com.ti.debug.engine.scripting.Symbol</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Symbol</class>
+  <method>exists</method>
+  <thread>10</thread>
+  <message>ENTRY sSymbol: C$$EXIT</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780385</millis>
+  <sequence>92</sequence>
+  <logger>com.ti.debug.engine.scripting.Symbol</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Symbol</class>
+  <method>exists</method>
+  <thread>10</thread>
+  <message>Getting symbol package</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780396</millis>
+  <sequence>93</sequence>
+  <logger>com.ti.debug.engine.scripting.Symbol</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Symbol</class>
+  <method>exists</method>
+  <thread>10</thread>
+  <message>Looking-up symbol</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780406</millis>
+  <sequence>94</sequence>
+  <logger>com.ti.debug.engine.scripting.Symbol</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Symbol</class>
+  <method>exists</method>
+  <thread>10</thread>
+  <message>Symbol "C$$EXIT" exists</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780406</millis>
+  <sequence>95</sequence>
+  <logger>com.ti.debug.engine.scripting.Symbol</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Symbol</class>
+  <method>exists</method>
+  <thread>10</thread>
+  <message>RETURN true</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780406</millis>
+  <sequence>96</sequence>
+  <logger>com.ti.debug.engine.scripting.Expression</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Expression</class>
+  <method>evaluate</method>
+  <thread>10</thread>
+  <message>ENTRY sExpression: PC == C$$EXIT</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780406</millis>
+  <sequence>97</sequence>
+  <logger>com.ti.debug.engine.scripting.Expression</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Expression</class>
+  <method>eval</method>
+  <thread>10</thread>
+  <message>Requesting evaluation of expression: "PC == C$$EXIT"</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780407</millis>
+  <sequence>98</sequence>
+  <logger>com.ti.debug.engine.scripting.Expression</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Expression$ExprEvalListener</class>
+  <method>waitUntil</method>
+  <thread>10</thread>
+  <message>ENTRY timeout: infinite</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780408</millis>
+  <sequence>99</sequence>
+  <logger>com.ti.debug.engine.scripting.Expression</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Expression$ExprEvalListener</class>
+  <method>onEvent</method>
+  <thread>12</thread>
+  <message>Evaluated expression: PC == C$$EXIT</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780408</millis>
+  <sequence>100</sequence>
+  <logger>com.ti.debug.engine.scripting.Expression</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Expression$ExprEvalListener</class>
+  <method>waitUntil</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780408</millis>
+  <sequence>101</sequence>
+  <logger>com.ti.debug.engine.scripting.Expression</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Expression</class>
+  <method>evaluate</method>
+  <thread>10</thread>
+  <message>RETURN 0x0</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780408</millis>
+  <sequence>102</sequence>
+  <logger>com.ti.debug.engine.scripting.Symbol</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Symbol</class>
+  <method>exists</method>
+  <thread>10</thread>
+  <message>ENTRY sSymbol: C$$EXITE</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780411</millis>
+  <sequence>103</sequence>
+  <logger>com.ti.debug.engine.scripting.Symbol</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Symbol</class>
+  <method>exists</method>
+  <thread>10</thread>
+  <message>Getting symbol package</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780411</millis>
+  <sequence>104</sequence>
+  <logger>com.ti.debug.engine.scripting.Symbol</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Symbol</class>
+  <method>exists</method>
+  <thread>10</thread>
+  <message>Looking-up symbol</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780411</millis>
+  <sequence>105</sequence>
+  <logger>com.ti.debug.engine.scripting.Symbol</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Symbol</class>
+  <method>exists</method>
+  <thread>10</thread>
+  <message>RETURN false</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780411</millis>
+  <sequence>106</sequence>
+  <logger>com.ti.debug.engine.scripting.Symbol</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Symbol</class>
+  <method>exists</method>
+  <thread>10</thread>
+  <message>ENTRY sSymbol: abort</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780411</millis>
+  <sequence>107</sequence>
+  <logger>com.ti.debug.engine.scripting.Symbol</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Symbol</class>
+  <method>exists</method>
+  <thread>10</thread>
+  <message>Getting symbol package</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780411</millis>
+  <sequence>108</sequence>
+  <logger>com.ti.debug.engine.scripting.Symbol</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Symbol</class>
+  <method>exists</method>
+  <thread>10</thread>
+  <message>Looking-up symbol</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780412</millis>
+  <sequence>109</sequence>
+  <logger>com.ti.debug.engine.scripting.Symbol</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Symbol</class>
+  <method>exists</method>
+  <thread>10</thread>
+  <message>Symbol "abort" exists</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780412</millis>
+  <sequence>110</sequence>
+  <logger>com.ti.debug.engine.scripting.Symbol</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Symbol</class>
+  <method>exists</method>
+  <thread>10</thread>
+  <message>RETURN true</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780412</millis>
+  <sequence>111</sequence>
+  <logger>com.ti.debug.engine.scripting.Expression</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Expression</class>
+  <method>evaluate</method>
+  <thread>10</thread>
+  <message>ENTRY sExpression: PC == abort</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780412</millis>
+  <sequence>112</sequence>
+  <logger>com.ti.debug.engine.scripting.Expression</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Expression</class>
+  <method>eval</method>
+  <thread>10</thread>
+  <message>Requesting evaluation of expression: "PC == abort"</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780412</millis>
+  <sequence>113</sequence>
+  <logger>com.ti.debug.engine.scripting.Expression</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Expression$ExprEvalListener</class>
+  <method>waitUntil</method>
+  <thread>10</thread>
+  <message>ENTRY timeout: infinite</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780413</millis>
+  <sequence>114</sequence>
+  <logger>com.ti.debug.engine.scripting.Expression</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Expression$ExprEvalListener</class>
+  <method>onEvent</method>
+  <thread>12</thread>
+  <message>Evaluated expression: PC == abort</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780413</millis>
+  <sequence>115</sequence>
+  <logger>com.ti.debug.engine.scripting.Expression</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Expression$ExprEvalListener</class>
+  <method>waitUntil</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780413</millis>
+  <sequence>116</sequence>
+  <logger>com.ti.debug.engine.scripting.Expression</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Expression</class>
+  <method>evaluate</method>
+  <thread>10</thread>
+  <message>RETURN 0x0</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780413</millis>
+  <sequence>117</sequence>
+  <logger>com.ti</logger>
+  <level>INFO</level>
+  <class>com.ti.ccstudio.scripting.environment.ScriptingEnvironment</class>
+  <method>traceWrite</method>
+  <thread>10</thread>
+  <message>Interrupt to abort . . .</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780415</millis>
+  <sequence>118</sequence>
+  <logger>com.ti.debug.engine.scripting.ProfileClock</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.ProfileClock</class>
+  <method>runBenchmark</method>
+  <thread>10</thread>
+  <message>ENTRY</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780437</millis>
+  <sequence>119</sequence>
+  <logger>com.ti.debug.engine.scripting.ProfileClock</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.ProfileClock</class>
+  <method>runBenchmark</method>
+  <thread>10</thread>
+  <message>ENTRY nEventID: 0</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780438</millis>
+  <sequence>120</sequence>
+  <logger>com.ti.debug.engine.scripting.ProfileClock</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.ProfileClock</class>
+  <method>runBenchmark</method>
+  <thread>10</thread>
+  <message>Setting Profile Clock count event</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780438</millis>
+  <sequence>121</sequence>
+  <logger>com.ti.debug.engine.scripting.ProfileClock</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.ProfileClock</class>
+  <method>setCurrentEvent</method>
+  <thread>10</thread>
+  <message>ENTRY nEventID: 0</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780438</millis>
+  <sequence>122</sequence>
+  <logger>com.ti.debug.engine.scripting.ProfileClock</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.ProfileClock</class>
+  <method>setCurrentEvent</method>
+  <thread>10</thread>
+  <message>Profile Clock is already configured to profile: Cycles</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780438</millis>
+  <sequence>123</sequence>
+  <logger>com.ti.debug.engine.scripting.ProfileClock</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.ProfileClock</class>
+  <method>setCurrentEvent</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780438</millis>
+  <sequence>124</sequence>
+  <logger>com.ti.debug.engine.scripting.ProfileClock</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.ProfileClock</class>
+  <method>runBenchmark</method>
+  <thread>10</thread>
+  <message>Enabling Profile Clock event counting</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780438</millis>
+  <sequence>125</sequence>
+  <logger>com.ti.debug.engine.scripting.ProfileClock</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.ProfileClock</class>
+  <method>enable</method>
+  <thread>10</thread>
+  <message>ENTRY</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780438</millis>
+  <sequence>126</sequence>
+  <logger>com.ti.debug.engine.scripting.ProfileClock</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.ProfileClock</class>
+  <method>enable</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780438</millis>
+  <sequence>127</sequence>
+  <logger>com.ti.debug.engine.scripting.ProfileClock</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.ProfileClock</class>
+  <method>runBenchmark</method>
+  <thread>10</thread>
+  <message>Resetting the profile clock register</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780438</millis>
+  <sequence>128</sequence>
+  <logger>com.ti.debug.engine.scripting.ProfileClock</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.ProfileClock</class>
+  <method>reset</method>
+  <thread>10</thread>
+  <message>ENTRY</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780441</millis>
+  <sequence>129</sequence>
+  <logger>com.ti.debug.engine.scripting.ProfileClock</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.ProfileClock</class>
+  <method>reset</method>
+  <thread>10</thread>
+  <message>RETURN</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780441</millis>
+  <sequence>130</sequence>
+  <logger>com.ti.debug.engine.scripting.ProfileClock</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.ProfileClock</class>
+  <method>runBenchmark</method>
+  <thread>10</thread>
+  <message>Running target</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780442</millis>
+  <sequence>131</sequence>
+  <logger>com.ti.debug.engine.scripting.Target</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.Target</class>
+  <method>run</method>
+  <thread>10</thread>
+  <message>ENTRY</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780442</millis>
+  <sequence>132</sequence>
+  <logger>com.ti.debug.engine.scripting.Target</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.ExecutionOperation</class>
+  <method>go</method>
+  <thread>10</thread>
+  <message>Requesting target execution</message>
+</record>
+<record>
+  <date>2016-10-26T14:19:40</date>
+  <millis>1477480780442</millis>
+  <sequence>133</sequence>
+  <logger>com.ti.debug.engine.scripting.Target</logger>
+  <level>FINER</level>
+  <class>com.ti.debug.engine.scripting.APIContainer$OnHaltListener</class>
+  <method>waitUntil</method>
+  <thread>10</thread>
+  <message>ENTRY timeout: infinite</message>
+</record>
+</log>
