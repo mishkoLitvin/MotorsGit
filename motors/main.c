@@ -32,6 +32,7 @@ McBSPdata mcbspData;
 int apsL, apsR;
 
 SPIData spiModule;
+short gyroEn;
 
 PIE_VECT_TABLE* interrupSVectTable;
 
@@ -52,6 +53,8 @@ __interrupt void cpu_timer1_isr(void);
 __interrupt void cpu_timer2_isr(void);
 __interrupt void SCI_RX_isr(void);
 __interrupt void SPI_RX_isr(void);
+__interrupt void GYRO_X_isr(void);
+
 
 
 void zeroStart(int index);
@@ -109,6 +112,7 @@ void main(void) {
 	interrupSVectTable->TINT2 = &cpu_timer2_isr;
 	interrupSVectTable->SCIRXINTA = &SCI_RX_isr;
 	interrupSVectTable->SPIRXINTA = &SPI_RX_isr;
+	interrupSVectTable->XINT2 = &GYRO_X_isr;
 	//	interrupSVectTable->ADCINT1 = &adc_readAll;
 	EDIS;
 
@@ -202,6 +206,7 @@ void main(void) {
 
 __interrupt void cpu_timer0_isr(void)
 {
+	GPIO_setHigh(gpioS, LED2);
 	float deltaPhT = (((motor0.velocity/360.)*2.*PI)*5E-4)*motor0.polesCount;
 
 	if(SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV==1)
@@ -246,12 +251,16 @@ __interrupt void cpu_timer0_isr(void)
 	}
 	else
 	{
-		setPWMValuesArr(calcPWM(&motor0));
+		if(SAAD_CTRL_ALL.CTRL.bit.WORK==0)
+			for(i=0;i<3;i++)
+				setPWMValues(i, 0);
+		else
+			setPWMValuesArr(calcPWM(&motor0));
 		setPWMValuesArr(calcPWM(&motor1));
 	}
 	if((mode == 1)&(SAAD_CTRL_ALL.POWER==1)&(SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV==0))
 		mode1cnt++;
-
+	GPIO_setLow(gpioS, LED2);
 	interrupS->PIEACK.all = PIEACK_GROUP1;
 
 }
@@ -279,10 +288,7 @@ __interrupt void cpu_timer2_isr(void)
 	}
 
 //	spiWrite( 0x02, 0x01);//data update freq
-//	gyroUpdateData();
-
-	if(setSci == 1)
-		saadFrame.VELOCITY.all = spiData->xData;
+	gyroUpdateData();
 
 	if(mode == 2)
 	{
@@ -300,6 +306,7 @@ __interrupt void cpu_timer2_isr(void)
 
 	flPS = 0;
 //	p += dp;
+
 }
 
 __interrupt void cpu_timer1_isr(void)
@@ -431,6 +438,19 @@ __interrupt void cpu_timer1_isr(void)
 									send = 2;
 								}
 								else
+									if(sciRxC[0]==0x70)
+									{
+										saadFrame.DATA.bit.DATA_L = sciRxC[1];
+										saadFrame.DATA.bit.DATA_H = sciRxC[2];
+
+										temp = (float) (saadFrame.DATA.all*0.02);
+										setSci = 1;
+										saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
+										if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
+											sciErrorCntCtrlSum++;
+										send = 2;
+									}
+								else
 									if(sciRxC[0]==0x20)
 									{
 										saadFrame.DATA.bit.DATA_L = sciRxC[1];
@@ -523,6 +543,16 @@ __interrupt void cpu_timer1_isr(void)
 											sciaWrite(saadFrame.DATA.bit.DATA_H);
 										}
 										else
+											if(saadFrame.COMMAND_BYTE.bit.COMMAND_H==0x70)
+											{
+//												saadFrame.COMMAND_BYTE.bit.COMMAND_H++;
+//												saadFrame.DATA.all = saadFrame.POSITION.all;
+												saadFrame.DATA.all = saadFrame.VELOCITY.all;
+												sciaWrite(saadFrame.COMMAND_BYTE.bit.COMMAND_H+1);
+												sciaWrite(saadFrame.DATA.bit.DATA_L);
+												sciaWrite(saadFrame.DATA.bit.DATA_H);
+											}
+										else
 											if(saadFrame.COMMAND_BYTE.bit.COMMAND_H==0x20)
 											{
 												saadFrame.COMMAND_BYTE.bit.COMMAND_H++;
@@ -545,6 +575,7 @@ __interrupt void SCI_RX_isr(void)
 
 __interrupt void SPI_RX_isr(void)
 {
+	GPIO_toggle(gpioS, LED1);
 //	if(spiaRegs->SPIFFRX.bit.RXFFST == 4)
 	{
 		spiData->xH = spiaRegs->SPIRXBUF;
@@ -553,13 +584,25 @@ __interrupt void SPI_RX_isr(void)
 		spiData->yL = spiaRegs->SPIRXBUF;
 
 		spiData->xData = (spiData->xH<<8)|spiData->xL;
-		spiData->xAngle = spiData->xData/(1000.0/(2^((unsigned)spiData->POWER_CFG>>6)));
+//		spiData->xAngle = spiData->xData/(1000.0/(2^((unsigned)spiData->POWER_CFG>>6)));
 		spiData->yData = (spiData->yH<<8)|spiData->yL;
-		spiData->yAngle = spiData->yData/(1000.0/(2^((unsigned)spiData->POWER_CFG>>6)));
+//		spiData->yAngle = spiData->yData/(1000.0/(2^((unsigned)spiData->POWER_CFG>>6)));
 	}
+	if(setSci == 1)
+		saadFrame.VELOCITY.all = spiData->xData;
+
+	gyroEn = 0;
+
 	spiaRegs->SPIFFRX.bit.RXFFINTCLR = 1;
 	interrupS->PIEACK.all = PIEACK_GROUP6;
 }
+
+__interrupt void GYRO_X_isr(void)
+{
+	gyroEn = 1;
+	interrupS->PIEACK.all = PIEACK_GROUP1;
+}
+
 
 void zeroStart(int index)
 {
@@ -659,8 +702,8 @@ void zeroStart(int index)
 	SAAD_CTRL_ALL.POWER = 0;
 	SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV = 1;
 	saadTests.all = 0;
-	motorF = 0;
-	motorF = 0xF0*(!GPIO_read(gpioS, MOTOR_1_FAULT))+0x0F*(!GPIO_read(gpioS, MOTOR_2_FAULT));
+
+	gyroEn = 0;
 }
 
 void makeTest()
@@ -671,7 +714,7 @@ void makeTest()
 		saadTests.bit.CTRL_PWR = 0;
 
 	if((spiData->POWER_CFG!=0x0B)
-			|(spiData->SENSE_CFG1!=0x28)
+			|(spiData->SENSE_CFG1!=0x11)
 			|(spiData->DR_CFG!=0)
 			|(spiData->spiID!=0xB1))
 		saadTests.bit.CTRL_VEL = 1;

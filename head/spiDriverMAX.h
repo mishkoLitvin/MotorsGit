@@ -248,13 +248,4 @@ static inline void spiGyroConf()
 //	spiWrite( 0x03, 0x3F);//lowpass filter DISAbling, highpass filter enabling
 
 	gyroVerify();
-
-	if((spiData->POWER_CFG!=0x0B)
-			|(spiData->SENSE_CFG1!=0x28)
-			|(spiData->DR_CFG!=0)
-			|(spiData->spiID!=0xB1))
-		saadTests.bit.CTRL_VEL = 1;
-	else
-		saadTests.bit.CTRL_VEL = 0;
-
 }
