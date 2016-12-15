@@ -186,7 +186,7 @@ void AMCconf()
 	GPIO_setHigh(gpioS, PS_A1);
 
 
-	mcbsp_write(0x19, 0x03E7); //config control register to unused default params
+	mcbsp_write(0x19, 0x03E7); //config control register to unused default params // set up 999 counts to form out sin
 
 	for(i=0;i<64;i++)
 	{

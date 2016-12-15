@@ -77,14 +77,11 @@ unsigned int sciCounter, sciSendCnt;
 SAAD_FRAME saadFrame;
 SAAD_TESTS saadTests;
 int setSci;
+int sendSCI;
 
-float alpha, alpha0;
+float alpha;
 int mode;
-int send;
 long mode1cnt;
-float posCoef;
-
-int spiSend, spiDataFF[4];
 
 Uint32 sciErrorCntCtrlSum, sciErrorCntFrameDown, sciErrorParity,
 frameCountR, frameCountT;
@@ -97,6 +94,16 @@ extern Uint16 RamfuncsLoadEnd;
 extern Uint16 RamfuncsRunStart;
 extern Uint16 RamfuncsLoadSize;
 #endif
+
+float alphaF(float a)
+{
+	return -0.06448
+			+0.45791*a
+			+0.09863*a*a
+			+0.08449*a*a*a
+			-0.10834*a*a*a*a
+			+0.16136*a*a*a*a*a;
+}
 
 void main(void) {
 
@@ -158,33 +165,9 @@ void main(void) {
 	interruptSEnable();
 	interrupsCpuSetup();
 
-	spiSend = 0;
-
 	for(;;)
 	{
 //		gyroVerify();
-		if(spiSend == 3)
-		{
-			gyroVerify();
-			if(spiSend == 3)
-				spiSend = 0;
-		}
-
-		if(spiSend == 1)
-		{
-
-			spiSetupFF();
-			if(spiSend == 1)
-				spiSend = 0;
-		}
-
-		if(spiSend == 2)
-		{
-			gyroUpdateData();
-
-			if(spiSend == 2)
-				spiSend = 0;
-		}
 
 		if(mode == 1)
 		{
@@ -197,7 +180,6 @@ void main(void) {
 					if(mode1cnt>26000)
 					{
 						mode = 2;
-						posCoef = 60./(motor0.rightPos-motor0.leftPos);
 					}
 		}
 	}
@@ -209,30 +191,58 @@ __interrupt void cpu_timer0_isr(void)
 	GPIO_setHigh(gpioS, LED2);
 	float deltaPhT = (((motor0.velocity/360.)*2.*PI)*5E-4)*motor0.polesCount;
 
+
 	if(SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV==1)
-		deltaPhT = 0;
-	if(deltaPhT<PI/motor0.polesCount)
 	{
-		if((fabs(deltaPhT/PI*180)<
-				fabs((alpha*posCoef-motor0.phasePosition))/motor0.polesCount)|(mode==1))
+		deltaPhT = ((motor0.phasePosition-alpha)/180.*PI)/motor0.polesCount;
+
+		if(deltaPhT<(PI/motor0.polesCount))
 		{
-			motor0.phaseTime += deltaPhT;
-			motor1.phaseTime += deltaPhT;
+			motor0.phaseTime += deltaPhT*0.05;
+			motor1.phaseTime += deltaPhT*0.05;
 		}
-		else
-		{
-			motor0.phaseTime += ((alpha*posCoef-motor0.phasePosition)/180.*PI)
-					/motor0.polesCount/2.;
-			motor1.phaseTime += ((alpha*posCoef-motor0.phasePosition)/180.*PI)
-					/motor0.polesCount/2.;
-			SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV=1;
-		}
+//		else
+//		{
+//			motor0.phaseTime += PI/motor0.polesCount*0.9;
+//			motor1.phaseTime += PI/motor0.polesCount*0.9;
+//		}
 	}
 	else
 	{
-		motor0.phaseTime += PI/motor0.polesCount*0.9;
-		motor1.phaseTime += PI/motor0.polesCount*0.9;
+		motor0.phaseTime += deltaPhT;
+		motor1.phaseTime += deltaPhT;
 	}
+	if((motor0.phasePosition-alpha)/180.*PI<deltaPhT)
+		SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV=1;
+
+//		if(deltaPhT<(PI/motor0.polesCount))
+//		{
+//			if((fabs(deltaPhT/PI*180)<
+//					fabs((alpha-motor0.phasePosition)/motor0.polesCount))|
+//					(mode==1))
+//			{
+//				if(SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV==0)
+//				{
+//					motor0.phaseTime += deltaPhT;
+//					motor1.phaseTime += deltaPhT;
+//				}
+//			}
+//			else
+//			{
+//				motor0.phaseTime += ((alpha-motor0.phasePosition)/180.*PI)
+//							/motor0.polesCount*0.5;
+//				motor1.phaseTime += ((alpha-motor0.phasePosition)/180.*PI)
+//							/motor0.polesCount*0.5;
+//				if(mode == 2)
+//					SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV=1;
+//			}
+//		}
+//		else
+//		{
+//			motor0.phaseTime += PI/motor0.polesCount*0.9;
+//			motor1.phaseTime += PI/motor0.polesCount*0.9;
+//		}
+//	}
 
 	if(motor0.phaseTime >=2.*PI)motor0.phaseTime-=2.*PI;
 	if(motor0.phaseTime <=0)motor0.phaseTime+=2.*PI;
@@ -273,11 +283,11 @@ __interrupt void cpu_timer2_isr(void)
 	if(mcbspData.data1&0x2000)
 		apsR = mcbsp_read(0x1F).data1;
 
-	alpha0 = alpha - (apsL*1.-apsR*1.)/1./(apsL*1.+apsR*1.);
 	alpha = (apsL*1.-apsR*1.)/1./(apsL*1.+apsR*1.);
-	if(setSci == 1)
-		saadFrame.POSITION.all = (short) apsL; //(alpha*posCoef/0.02);
+	alpha = alphaF(alpha)*180./PI;
 
+	if(setSci == 1)
+		saadFrame.POSITION.all = (alpha*50);
 
 	if(mode == 1)
 	{
@@ -292,17 +302,21 @@ __interrupt void cpu_timer2_isr(void)
 
 	if(mode == 2)
 	{
-		if(alpha*posCoef>motor0.phasePosition)
+		if(alpha>motor0.phasePosition)
 			motor0.velocity = -1.*temp;
-		if(alpha*posCoef<motor0.phasePosition)
+		if(alpha<motor0.phasePosition)
+			motor0.velocity = 1.*temp;
+	}
+
+	if(mode == 3)
+	{
+		if((alpha<=(motor0.rightPos)))
 			motor0.velocity = 1.*temp;
 
-//		if((alpha>=(motor0.rightPos)))
-//			motor0.velocity = -1.*temp;
-//
-//		if((alpha<=(motor0.leftPos)))
-//			motor0.velocity = 1.*temp;
+		if((alpha>=(motor0.leftPos)))
+			motor0.velocity = -1.*temp;
 	}
+
 
 	flPS = 0;
 //	p += dp;
@@ -351,7 +365,7 @@ __interrupt void cpu_timer1_isr(void)
 			saadFrame.CTRLSUM.bit.CTRLSUM_H = (0x00FF)&sciRxC[3];
 			if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
 				sciErrorCntCtrlSum++;
-			send = 1;
+			sendSCI = 1;
 		}
 		else
 			if(sciRxC[0]==0xA0)
@@ -361,7 +375,7 @@ __interrupt void cpu_timer1_isr(void)
 				saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
 				if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
 					sciErrorCntCtrlSum++;
-				send = 1;
+				sendSCI = 1;
 			}
 			else
 				if(sciRxC[0]==0xC0)
@@ -376,7 +390,7 @@ __interrupt void cpu_timer1_isr(void)
 					saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
 					if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
 						sciErrorCntCtrlSum++;
-					send = 1;
+					sendSCI = 1;
 				}
 				else
 					if(sciRxC[0]==0x80)
@@ -391,7 +405,7 @@ __interrupt void cpu_timer1_isr(void)
 						saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
 						if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
 							sciErrorCntCtrlSum++;
-						send = 1;
+						sendSCI = 1;
 					}
 					else
 						if(sciRxC[0]==0x10)
@@ -408,7 +422,7 @@ __interrupt void cpu_timer1_isr(void)
 							saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
 							if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
 								sciErrorCntCtrlSum++;
-							send = 1;
+							sendSCI = 1;
 						}
 						else
 							if(sciRxC[0]==0x30)
@@ -421,7 +435,7 @@ __interrupt void cpu_timer1_isr(void)
 								saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
 								if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
 									sciErrorCntCtrlSum++;
-								send = 1;
+								sendSCI = 1;
 							}
 							else
 								if(sciRxC[0]==0x50)
@@ -429,26 +443,29 @@ __interrupt void cpu_timer1_isr(void)
 									saadFrame.DATA.bit.DATA_L = sciRxC[1];
 									saadFrame.DATA.bit.DATA_H = sciRxC[2];
 
-									motor0.phasePosition = (float) (saadFrame.DATA.all*0.02);
+									motor0.phasePosition =  (((float)saadFrame.DATA.all)*0.02);
+									mode = 2;
 									SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV = 0;
 									setSci = 1;
 									saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
 									if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
 										sciErrorCntCtrlSum++;
-									send = 2;
+									sendSCI = 2;
 								}
 								else
 									if(sciRxC[0]==0x70)
 									{
 										saadFrame.DATA.bit.DATA_L = sciRxC[1];
 										saadFrame.DATA.bit.DATA_H = sciRxC[2];
-
+										mode = 3;
 										temp = (float) (saadFrame.DATA.all*0.02);
+										SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV = 0;
+//										temp = (float) (saadFrame.DATA.all*PI/180./10.);
 										setSci = 1;
 										saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
 										if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
 											sciErrorCntCtrlSum++;
-										send = 2;
+										sendSCI = 2;
 									}
 								else
 									if(sciRxC[0]==0x20)
@@ -464,14 +481,14 @@ __interrupt void cpu_timer1_isr(void)
 										saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
 										if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
 											sciErrorCntCtrlSum++;
-										send = 1;
+										sendSCI = 1;
 									}
 	}
 
-	if((timer2cnt>2)|(send == 1)|(send == 2))
+	if((timer2cnt>2)|(sendSCI == 1)|(sendSCI == 2))
 	{
 		timer2cnt = 0;
-		if(send>0)
+		if(sendSCI>0)
 			if(sciaRegs->SCIFFTX.bit.TXFFST == 0)
 			{
 				frameCountT++;
@@ -547,7 +564,7 @@ __interrupt void cpu_timer1_isr(void)
 											{
 //												saadFrame.COMMAND_BYTE.bit.COMMAND_H++;
 //												saadFrame.DATA.all = saadFrame.POSITION.all;
-												saadFrame.DATA.all = saadFrame.VELOCITY.all;
+												saadFrame.DATA.all = saadFrame.VELOCITY.all*0.02;
 												sciaWrite(saadFrame.COMMAND_BYTE.bit.COMMAND_H+1);
 												sciaWrite(saadFrame.DATA.bit.DATA_L);
 												sciaWrite(saadFrame.DATA.bit.DATA_H);
@@ -562,8 +579,8 @@ __interrupt void cpu_timer1_isr(void)
 											}
 
 				sciaWrite(crc8DATA(saadFrame));
-				if(send == 1)
-					send = 0;
+				if(sendSCI == 1)
+					sendSCI = 0;
 			}
 	}
 }
@@ -624,8 +641,8 @@ void zeroStart(int index)
 		motor1.velocity = 0;
 		motor1.polesCount = 10.;
 
-		motor0.leftPos = 0.40;
-		motor0.rightPos = -0.27;
+		motor0.leftPos = 19.;
+		motor0.rightPos = -19.;
 	}
 	else
 		if(index == 1)
@@ -647,8 +664,8 @@ void zeroStart(int index)
 			motor0.polesCount = 32.757/2.;
 			motor1.polesCount = 32.757/2.;
 
-			motor0.leftPos = 1.50;
-			motor0.rightPos = -0.85;
+			motor0.leftPos = 0;
+			motor0.rightPos = -0;
 		}
 
 	timer2cnt = 0;
@@ -666,12 +683,12 @@ void zeroStart(int index)
 	sciCounter = 0;
 	sciSendCnt = 0;
 	sciFramePart = 0;
-	send = 0;
+	sendSCI = 0;
 	setSci = 0;
 
 	temp = 2.;
 
-	mode = 1;
+	mode = 0;
 	mode1cnt = 0;
 
 //	dp = 0;

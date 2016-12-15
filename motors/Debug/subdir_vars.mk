@@ -10,11 +10,11 @@ ASM_SRCS += \
 ../F2806x_CodeStartBranch.asm 
 
 C_SRCS += \
-C:/Users/Mishko\ Lytvyn/Dropbox/WORK/CCSworkspace/motorsPro/src/clk.c \
-C:/Users/Mishko\ Lytvyn/Dropbox/WORK/CCSworkspace/motorsPro/src/gpio.c \
+C:/Users/Mishko\ Lytvyn/Dropbox/WORK/CCSworkspace/MotorsGit/src/clk.c \
+C:/Users/Mishko\ Lytvyn/Dropbox/WORK/CCSworkspace/MotorsGit/src/gpio.c \
 ../main.c \
-C:/Users/Mishko\ Lytvyn/Dropbox/WORK/CCSworkspace/motorsPro/src/memCopy.c \
-C:/Users/Mishko\ Lytvyn/Dropbox/WORK/CCSworkspace/motorsPro/src/pid_reg3.c 
+C:/Users/Mishko\ Lytvyn/Dropbox/WORK/CCSworkspace/MotorsGit/src/memCopy.c \
+C:/Users/Mishko\ Lytvyn/Dropbox/WORK/CCSworkspace/MotorsGit/src/pid_reg3.c 
 
 OBJS += \
 ./F2806x_CodeStartBranch.obj \
@@ -56,10 +56,10 @@ ASM_SRCS__QUOTED += \
 "../F2806x_CodeStartBranch.asm" 
 
 C_SRCS__QUOTED += \
-"C:/Users/Mishko Lytvyn/Dropbox/WORK/CCSworkspace/motorsPro/src/clk.c" \
-"C:/Users/Mishko Lytvyn/Dropbox/WORK/CCSworkspace/motorsPro/src/gpio.c" \
+"C:/Users/Mishko Lytvyn/Dropbox/WORK/CCSworkspace/MotorsGit/src/clk.c" \
+"C:/Users/Mishko Lytvyn/Dropbox/WORK/CCSworkspace/MotorsGit/src/gpio.c" \
 "../main.c" \
-"C:/Users/Mishko Lytvyn/Dropbox/WORK/CCSworkspace/motorsPro/src/memCopy.c" \
-"C:/Users/Mishko Lytvyn/Dropbox/WORK/CCSworkspace/motorsPro/src/pid_reg3.c" 
+"C:/Users/Mishko Lytvyn/Dropbox/WORK/CCSworkspace/MotorsGit/src/memCopy.c" \
+"C:/Users/Mishko Lytvyn/Dropbox/WORK/CCSworkspace/MotorsGit/src/pid_reg3.c" 
 
 
