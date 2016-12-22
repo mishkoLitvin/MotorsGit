@@ -23,6 +23,8 @@
 
 #include "stdlib.h"
 
+//#define EPSILON
+#define BETA
 
 void main(void);
 
@@ -79,7 +81,7 @@ SAAD_TESTS saadTests;
 int setSci;
 int sendSCI;
 
-float alpha;
+float alpha, alpha0;
 int mode;
 long mode1cnt;
 
@@ -95,15 +97,54 @@ extern Uint16 RamfuncsRunStart;
 extern Uint16 RamfuncsLoadSize;
 #endif
 
+
+#ifdef BETA
 float alphaF(float a)
 {
-	return -0.06448
-			+0.45791*a
-			+0.09863*a*a
-			+0.08449*a*a*a
-			-0.10834*a*a*a*a
-			+0.16136*a*a*a*a*a;
+	return
+			-6.4116+1.4
+			+22.99281*a
+			+10.55034*a*a
+			+9.740350*a*a*a
+			-49.66408*a*a*a*a
+			+25.62861*a*a*a*a*a
+			+103.0209*a*a*a*a*a*a
+			-80.98880*a*a*a*a*a*a*a;
 }
+#endif
+
+
+#ifdef EPSILON
+float alphaF(float a)
+{
+	return
+//			-2.14732
+//			+22.07698*a
+//			+7.75619*a*a
+//			+9.18366*a*a*a
+//			-37.31414*a*a*a*a
+//			+3.84529*a*a*a*a*a
+//			+30.76679*a*a*a*a*a*a
+//			-14.398*a*a*a*a*a*a*a;
+
+			-2.30137
+			+22.90774*a
+			+6.27669*a*a
+			+8.17421*a*a*a
+			-32.85827*a*a*a*a
+			+2.92022*a*a*a*a*a
+			+27.0813*a*a*a*a*a*a
+			-12.42804*a*a*a*a*a*a*a;
+
+//			-2.07512
+//			+24.62972*a
+//			-0.59348*a*a
+//			+0.33452*a*a*a
+//			-5.65822*a*a*a*a
+//			+3.3262*a*a*a*a*a;
+}
+#endif
+
 
 void main(void) {
 
@@ -138,7 +179,13 @@ void main(void) {
 	mcbspaInit();
 	mcbspaSetup();
 	mcbspSetupSpi();
-	AMCconf();
+
+#ifdef BETA
+	AMCconf(0);
+#endif
+#ifdef EPSILON
+	AMCconf(1);
+#endif
 
 	setSPIData(&spiModule);
 	spiInit();
@@ -160,7 +207,14 @@ void main(void) {
 	adcInit();
 	ADC_config();
 
+#ifdef BETA
 	zeroStart(0);
+#endif
+
+#ifdef EPSILON
+	zeroStart(1);
+#endif
+
 
 	interruptSEnable();
 	interrupsCpuSetup();
@@ -168,6 +222,15 @@ void main(void) {
 	for(;;)
 	{
 //		gyroVerify();
+
+		adcRes[0] = adcRead(0);
+		adcRes[1] = adcRead(1);
+		adcRes[2] = adcRead(2);
+
+		adcRes[8] = adcRead(8);
+		adcRes[9] = adcRead(9);
+		adcRes[10] = adcRead(10);
+
 
 		if(mode == 1)
 		{
@@ -189,60 +252,39 @@ void main(void) {
 __interrupt void cpu_timer0_isr(void)
 {
 	GPIO_setHigh(gpioS, LED2);
-	float deltaPhT = (((motor0.velocity/360.)*2.*PI)*5E-4)*motor0.polesCount;
+	float deltaPhT = (((motor0.velocity/180.)*PI)*5E-4)*motor0.polesCount;
 
+	if(((fabs(motor0.phasePosition-alpha)/180.*PI)<deltaPhT)&(mode==2))
+			SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV=1;
 
-	if(SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV==1)
+	if((SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV==1)&(mode==2))
 	{
 		deltaPhT = ((motor0.phasePosition-alpha)/180.*PI)/motor0.polesCount;
 
 		if(deltaPhT<(PI/motor0.polesCount))
 		{
-			motor0.phaseTime += deltaPhT*0.05;
-			motor1.phaseTime += deltaPhT*0.05;
+#ifdef EPSILON
+			motor0.phaseTime += deltaPhT*0.1;
+			motor1.phaseTime += deltaPhT*0.1;
+#endif
+#ifdef BETA
+			motor0.phaseTime += deltaPhT*0.03;
+			motor1.phaseTime += deltaPhT*0.03;
+#endif
+
 		}
-//		else
-//		{
-//			motor0.phaseTime += PI/motor0.polesCount*0.9;
-//			motor1.phaseTime += PI/motor0.polesCount*0.9;
-//		}
+		else
+		{
+			motor0.phaseTime += PI/motor0.polesCount*0.9;
+			motor1.phaseTime += PI/motor0.polesCount*0.9;
+		}
 	}
 	else
 	{
 		motor0.phaseTime += deltaPhT;
 		motor1.phaseTime += deltaPhT;
 	}
-	if((motor0.phasePosition-alpha)/180.*PI<deltaPhT)
-		SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV=1;
 
-//		if(deltaPhT<(PI/motor0.polesCount))
-//		{
-//			if((fabs(deltaPhT/PI*180)<
-//					fabs((alpha-motor0.phasePosition)/motor0.polesCount))|
-//					(mode==1))
-//			{
-//				if(SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV==0)
-//				{
-//					motor0.phaseTime += deltaPhT;
-//					motor1.phaseTime += deltaPhT;
-//				}
-//			}
-//			else
-//			{
-//				motor0.phaseTime += ((alpha-motor0.phasePosition)/180.*PI)
-//							/motor0.polesCount*0.5;
-//				motor1.phaseTime += ((alpha-motor0.phasePosition)/180.*PI)
-//							/motor0.polesCount*0.5;
-//				if(mode == 2)
-//					SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV=1;
-//			}
-//		}
-//		else
-//		{
-//			motor0.phaseTime += PI/motor0.polesCount*0.9;
-//			motor1.phaseTime += PI/motor0.polesCount*0.9;
-//		}
-//	}
 
 	if(motor0.phaseTime >=2.*PI)motor0.phaseTime-=2.*PI;
 	if(motor0.phaseTime <=0)motor0.phaseTime+=2.*PI;
@@ -261,11 +303,11 @@ __interrupt void cpu_timer0_isr(void)
 	}
 	else
 	{
-		if(SAAD_CTRL_ALL.CTRL.bit.WORK==0)
-			for(i=0;i<3;i++)
-				setPWMValues(i, 0);
-		else
-			setPWMValuesArr(calcPWM(&motor0));
+//		if(SAAD_CTRL_ALL.CTRL.bit.WORK==0)
+//			for(i=0;i<3;i++)
+//				setPWMValues(i, 0);
+//		else
+		setPWMValuesArr(calcPWM(&motor0));
 		setPWMValuesArr(calcPWM(&motor1));
 	}
 	if((mode == 1)&(SAAD_CTRL_ALL.POWER==1)&(SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV==0))
@@ -284,7 +326,8 @@ __interrupt void cpu_timer2_isr(void)
 		apsR = mcbsp_read(0x1F).data1;
 
 	alpha = (apsL*1.-apsR*1.)/1./(apsL*1.+apsR*1.);
-	alpha = alphaF(alpha)*180./PI;
+	alpha0 = (apsL*1.-apsR*1.)/1./(apsL*1.+apsR*1.);
+	alpha = alphaF(alpha);
 
 	if(setSci == 1)
 		saadFrame.POSITION.all = (alpha*50);
@@ -315,6 +358,7 @@ __interrupt void cpu_timer2_isr(void)
 
 		if((alpha>=(motor0.leftPos)))
 			motor0.velocity = -1.*temp;
+
 	}
 
 
@@ -458,7 +502,8 @@ __interrupt void cpu_timer1_isr(void)
 										saadFrame.DATA.bit.DATA_L = sciRxC[1];
 										saadFrame.DATA.bit.DATA_H = sciRxC[2];
 										mode = 3;
-										temp = (float) (saadFrame.DATA.all*0.02);
+										temp = ((float)saadFrame.DATA.all)*0.02;
+										motor0.velocity = ((float)saadFrame.DATA.all)*0.02;
 										SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV = 0;
 //										temp = (float) (saadFrame.DATA.all*PI/180./10.);
 										setSci = 1;
@@ -564,7 +609,7 @@ __interrupt void cpu_timer1_isr(void)
 											{
 //												saadFrame.COMMAND_BYTE.bit.COMMAND_H++;
 //												saadFrame.DATA.all = saadFrame.POSITION.all;
-												saadFrame.DATA.all = saadFrame.VELOCITY.all*0.02;
+												saadFrame.DATA.all = saadFrame.VELOCITY.all;
 												sciaWrite(saadFrame.COMMAND_BYTE.bit.COMMAND_H+1);
 												sciaWrite(saadFrame.DATA.bit.DATA_L);
 												sciaWrite(saadFrame.DATA.bit.DATA_H);
@@ -601,12 +646,21 @@ __interrupt void SPI_RX_isr(void)
 		spiData->yL = spiaRegs->SPIRXBUF;
 
 		spiData->xData = (spiData->xH<<8)|spiData->xL;
-//		spiData->xAngle = spiData->xData/(1000.0/(2^((unsigned)spiData->POWER_CFG>>6)));
+		spiData->xAngle = spiData->xData/240.;
 		spiData->yData = (spiData->yH<<8)|spiData->yL;
-//		spiData->yAngle = spiData->yData/(1000.0/(2^((unsigned)spiData->POWER_CFG>>6)));
+		spiData->yAngle = spiData->yData/240.;
 	}
 	if(setSci == 1)
+	{
+#ifdef BETA
 		saadFrame.VELOCITY.all = spiData->xData;
+#endif
+#ifdef EPSILON
+		saadFrame.VELOCITY.all = spiData->yData;
+#endif
+
+	}
+
 
 	gyroEn = 0;
 
@@ -650,22 +704,22 @@ void zeroStart(int index)
 			motor0.index = 0;
 			motor0.direction = 1;
 			motor0.phaseTime = motor0.phaseZero;
-			motor0.pwmData = getMaxPWMVal(0)*0.30;
+			motor0.pwmData = getMaxPWMVal(0)*0.45;
 			motor0.velocity = 0;
 
 			motor1.index = 1;
 			motor1.direction = 1;
 			motor1.phaseTime = motor1.phaseZero;
-			motor1.pwmData = getMaxPWMVal(0)*0.30;
+			motor1.pwmData = getMaxPWMVal(0)*0.45;
 			motor1.velocity = 0;
 
-			motor0.phaseZero = 6.;
-			motor1.phaseZero = 3.1;
+			motor0.phaseZero = 4.3;//6.;
+			motor1.phaseZero = 0;//3.1;
 			motor0.polesCount = 32.757/2.;
 			motor1.polesCount = 32.757/2.;
 
-			motor0.leftPos = 0;
-			motor0.rightPos = -0;
+			motor0.leftPos = 22.;
+			motor0.rightPos = -22.;
 		}
 
 	timer2cnt = 0;

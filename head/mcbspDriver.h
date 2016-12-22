@@ -46,7 +46,7 @@ void mcbspSetupSpi();
 void mcbsp_write(int addr, long data);
 McBSPdata mcbsp_read(int addr);
 Uint32 mcbspAddr();
-void AMCconf();
+void AMCconf(int index);
 
 
 
@@ -175,7 +175,7 @@ long AMCconfArr[64] = {0x0000, 0x00CB, 0x2994, 0xA946,
 		0x5BCD, 0xD5D5, 0xAD59, 0xACCB
 };
 
-void AMCconf()
+void AMCconf(int index)
 {
 	int i,j;
 	GPIO_setHigh(gpioS, PS_RST);
@@ -198,13 +198,19 @@ void AMCconf()
 //	mcbsp_write(0x02, 0x0F7C);//config sinc filter parametr register #1
 	mcbsp_write(0x02, 0x0F7C);//config sinc filter parametr register #1
 //	mcbsp_write(0x03, 0x430F);//config integrator parametr register #1
-	mcbsp_write(0x03, 0x4B0F);//config integrator parametr register #1
+	if(index == 0)
+		mcbsp_write(0x03, 0x4B0F);//config integrator parametr register #1
+	if(index == 1)
+		mcbsp_write(0x03, 0x4B0F);//config integrator parametr register #1
 
 	mcbsp_write(0x07, 0x0000);//config control parametr register #2
 //	mcbsp_write(0x08, 0x0F7C);//config sinc filter parametr register #2
 	mcbsp_write(0x08, 0x0F7C);//config sinc filter parametr register #2
 //	mcbsp_write(0x09, 0x430F);//config integrator parametr register #2
-	mcbsp_write(0x09, 0x4B0F);//config integrator parametr register #2
+	if(index == 0)
+		mcbsp_write(0x09, 0x4B0F);//config integrator parametr register #2
+	if(index == 1)
+		mcbsp_write(0x09, 0x4B0F);//config integrator parametr register #2
 
 	//enable power part of PS
 	GPIO_setHigh(gpioS, PS_A0);
