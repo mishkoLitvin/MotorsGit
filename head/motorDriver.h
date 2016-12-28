@@ -22,6 +22,7 @@ typedef struct MotorData_
 	int pwmData, pwmData0, pwmData1, pwmData2;
 	int direction;
 	float velocity;
+	float aceleration;
 	float polesCount;
 	float leftPos, rightPos;
 

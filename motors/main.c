@@ -64,7 +64,7 @@ void makeTest();
 
 long j, jj;
 int ch;
-unsigned long timer2cnt;
+unsigned long timer1cnt, timer2cnt;
 int stepsCount;
 double temp;
 long i;
@@ -76,14 +76,16 @@ unsigned char motorF;
 int sciRxC[4];
 int sciFramePart;
 unsigned int sciCounter, sciSendCnt;
-SAAD_FRAME saadFrame;
+SAAD_FRAME saadFrameSend, saadFrameResive;
 SAAD_TESTS saadTests;
 int setSci;
 int sendSCI;
 
 float alpha, alpha0;
 int mode;
-long mode1cnt;
+long mode1cnt, mode3cnt;
+float acel, timeUp, vel, vel0, time;
+short stabilize;
 
 Uint32 sciErrorCntCtrlSum, sciErrorCntFrameDown, sciErrorParity,
 frameCountR, frameCountT;
@@ -118,15 +120,6 @@ float alphaF(float a)
 float alphaF(float a)
 {
 	return
-//			-2.14732
-//			+22.07698*a
-//			+7.75619*a*a
-//			+9.18366*a*a*a
-//			-37.31414*a*a*a*a
-//			+3.84529*a*a*a*a*a
-//			+30.76679*a*a*a*a*a*a
-//			-14.398*a*a*a*a*a*a*a;
-
 			-2.30137
 			+22.90774*a
 			+6.27669*a*a
@@ -135,13 +128,6 @@ float alphaF(float a)
 			+2.92022*a*a*a*a*a
 			+27.0813*a*a*a*a*a*a
 			-12.42804*a*a*a*a*a*a*a;
-
-//			-2.07512
-//			+24.62972*a
-//			-0.59348*a*a
-//			+0.33452*a*a*a
-//			-5.65822*a*a*a*a
-//			+3.3262*a*a*a*a*a;
 }
 #endif
 
@@ -166,8 +152,6 @@ void main(void) {
 
 
 #ifdef FLASH
-//	memcpy(&RamfuncsRunStart, &RamfuncsLoadStart, (Uint32)&RamfuncsLoadSize);
-
 	flashInit();
 	flashSetup();
 #endif
@@ -252,20 +236,42 @@ void main(void) {
 __interrupt void cpu_timer0_isr(void)
 {
 	GPIO_setHigh(gpioS, LED2);
+	if(SAAD_CTRL_ALL.CTRL.bit.WORK == 1)
+	{
+		if(time<=vel/acel)
+		{
+			if(fabs(motor0.velocity)>vel)
+				time=vel/acel+5E-5;
+			else
+			{
+				time+=5E-5;
+				motor0.velocity = motor0.velocity+motor0.aceleration*5E-5;
+			}
+
+		}
+		else
+			motor0.velocity = vel*motor0.velocity/fabs(motor0.velocity);
+	}
+
 	float deltaPhT = (((motor0.velocity/180.)*PI)*5E-4)*motor0.polesCount;
 
-	if(((fabs(motor0.phasePosition-alpha)/180.*PI)<deltaPhT)&(mode==2))
-			SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV=1;
+	if(((fabs(motor0.phasePosition-alpha)/180.*PI)<0.1)&(mode==2))
+		stabilize = 1;
+	if(((fabs(motor0.phasePosition-alpha)/180.*PI)>0.1)&(mode==2))
+		stabilize = 0;
+//	if(((fabs(motor0.phasePosition-alpha))>4.)&(mode==2))
+//				SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV=0;
 
-	if((SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV==1)&(mode==2))
+
+	if((stabilize==1)&(mode==2))
 	{
 		deltaPhT = ((motor0.phasePosition-alpha)/180.*PI)/motor0.polesCount;
 
 		if(deltaPhT<(PI/motor0.polesCount))
 		{
 #ifdef EPSILON
-			motor0.phaseTime += deltaPhT*0.1;
-			motor1.phaseTime += deltaPhT*0.1;
+			motor0.phaseTime += deltaPhT*0.05;
+			motor1.phaseTime += deltaPhT*0.05;
 #endif
 #ifdef BETA
 			motor0.phaseTime += deltaPhT*0.03;
@@ -319,6 +325,7 @@ __interrupt void cpu_timer0_isr(void)
 
 __interrupt void cpu_timer2_isr(void)
 {
+	timer2cnt++;
 	mcbspData = mcbsp_read(0x00);
 	if(mcbspData.data1&0x1000)
 		apsL = mcbsp_read(0x1D).data1;
@@ -330,7 +337,14 @@ __interrupt void cpu_timer2_isr(void)
 	alpha = alphaF(alpha);
 
 	if(setSci == 1)
-		saadFrame.POSITION.all = (alpha*50);
+		saadFrameSend.POSITION.all = (alpha*50);
+
+	if(timer2cnt>300)
+	{
+		motor1.velocity = (motor1.phasePosition-alpha)/0.1050;
+		motor1.phasePosition = alpha;
+		timer2cnt = 0;
+	}
 
 	if(mode == 1)
 	{
@@ -346,18 +360,33 @@ __interrupt void cpu_timer2_isr(void)
 	if(mode == 2)
 	{
 		if(alpha>motor0.phasePosition)
+		{
 			motor0.velocity = -1.*temp;
+		}
 		if(alpha<motor0.phasePosition)
 			motor0.velocity = 1.*temp;
 	}
 
+
 	if(mode == 3)
 	{
-		if((alpha<=(motor0.rightPos)))
-			motor0.velocity = 1.*temp;
+		if(mode3cnt<1003)
+			mode3cnt++;
+		if((alpha<=(motor0.rightPos+vel*vel*0.5/acel))&(time>vel/acel))
+		{
+//			motor0.velocity = 0;
+			motor0.aceleration = 1.*acel;
+			time = -timeUp;
+			mode3cnt = 0;
+		}
 
-		if((alpha>=(motor0.leftPos)))
-			motor0.velocity = -1.*temp;
+		if((alpha>=(motor0.leftPos-vel*vel*0.5/acel))&(time>vel/acel))
+		{
+//			motor0.velocity = 0;
+			motor0.aceleration = -1.*acel;
+			time = -timeUp;
+			mode3cnt = 0;
+		}
 
 	}
 
@@ -369,7 +398,7 @@ __interrupt void cpu_timer2_isr(void)
 
 __interrupt void cpu_timer1_isr(void)
 {
-	timer2cnt++;
+	timer1cnt++;
 	if((sciFramePart == 1)&
 			(sciaRegs->SCIFFRX.bit.RXFFST<4))
 	{
@@ -401,229 +430,201 @@ __interrupt void cpu_timer1_isr(void)
 
 		sciFramePart = 0;
 
-		saadFrame.COMMAND_BYTE.bit.COMMAND_H = (0x00FF)&sciRxC[0];
-		if(sciRxC[0]==0xB0)
+		saadFrameResive.COMMAND_BYTE.bit.COMMAND_H = (0x00FF)&sciRxC[0];
+		saadFrameSend.COMMAND_BYTE.bit.COMMAND_H = saadFrameResive.COMMAND_BYTE.bit.COMMAND_H+1;
+		if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0xC0)
 		{
-			saadFrame.POSITION.bit.POSITION_L = (0x00FF)&sciRxC[1];
-			saadFrame.POSITION.bit.POSITION_H = (0x00FF)&sciRxC[2];
-			saadFrame.CTRLSUM.bit.CTRLSUM_H = (0x00FF)&sciRxC[3];
-			if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
+			saadFrameResive.DATA.bit.DATA_L = sciRxC[1];
+			saadFrameResive.DATA.bit.DATA_H = sciRxC[2];
+			if(saadFrameResive.DATA.all==0xAAAA)
+				SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV = 1;
+			else
+				if(saadFrameResive.DATA.all==0xBBBB)
+					SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV = 0;
+			saadFrameResive.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
+			if(saadFrameResive.CTRLSUM.bit.CTRLSUM_H!=crc8DATA(saadFrameResive))
 				sciErrorCntCtrlSum++;
 			sendSCI = 1;
 		}
 		else
-			if(sciRxC[0]==0xA0)
+			if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0x80)
 			{
-				saadFrame.VELOCITY.bit.VELOCITY_L = sciRxC[1];
-				saadFrame.VELOCITY.bit.VELOCITY_H = sciRxC[2];
-				saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
-				if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
+				saadFrameResive.DATA.bit.DATA_L = sciRxC[1];
+				saadFrameResive.DATA.bit.DATA_H = sciRxC[2];
+				if(saadFrameResive.DATA.all==0xAAAA)
+					SAAD_CTRL_ALL.CTRL.bit.AVTO = 1;
+				else
+					if(saadFrameResive.DATA.all==0xBBBB)
+						SAAD_CTRL_ALL.CTRL.bit.AVTO = 0;
+				saadFrameResive.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
+				if(saadFrameResive.CTRLSUM.bit.CTRLSUM_H!=crc8DATA(saadFrameResive))
 					sciErrorCntCtrlSum++;
 				sendSCI = 1;
 			}
 			else
-				if(sciRxC[0]==0xC0)
+				if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0x10)
 				{
-					saadFrame.DATA.bit.DATA_L = sciRxC[1];
-					saadFrame.DATA.bit.DATA_H = sciRxC[2];
-					if(saadFrame.DATA.all==0xAAAA)
-						SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV = 1;
+					saadFrameResive.DATA.bit.DATA_L = sciRxC[1];
+					saadFrameResive.DATA.bit.DATA_H = sciRxC[2];
+
+					if(saadFrameResive.DATA.all==0xAAAA)
+						SAAD_CTRL_ALL.POWER = 1;
 					else
-						if(saadFrame.DATA.all==0xBBBB)
-							SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV = 0;
-					saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
-					if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
+						if(saadFrameResive.DATA.all==0xBBBB)
+							SAAD_CTRL_ALL.POWER = 0;
+
+					saadFrameResive.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
+					if(saadFrameResive.CTRLSUM.bit.CTRLSUM_H!=crc8DATA(saadFrameResive))
 						sciErrorCntCtrlSum++;
 					sendSCI = 1;
 				}
 				else
-					if(sciRxC[0]==0x80)
+					if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0x30)
 					{
-						saadFrame.DATA.bit.DATA_L = sciRxC[1];
-						saadFrame.DATA.bit.DATA_H = sciRxC[2];
-						if(saadFrame.DATA.all==0xAAAA)
-							SAAD_CTRL_ALL.CTRL.bit.AVTO = 1;
-						else
-							if(saadFrame.DATA.all==0xBBBB)
-								SAAD_CTRL_ALL.CTRL.bit.AVTO = 0;
-						saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
-						if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
+						saadFrameResive.DATA.bit.DATA_L = sciRxC[1];
+						saadFrameResive.DATA.bit.DATA_H = sciRxC[2];
+
+						makeTest();
+
+						saadFrameResive.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
+						if(saadFrameResive.CTRLSUM.bit.CTRLSUM_H!=crc8DATA(saadFrameResive))
 							sciErrorCntCtrlSum++;
 						sendSCI = 1;
 					}
 					else
-						if(sciRxC[0]==0x10)
+//#ifdef BETA
+						if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0x50)
+//#endif
+//#ifdef EPSILON
+//							if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0x60)
+//#endif
+
 						{
-							saadFrame.DATA.bit.DATA_L = sciRxC[1];
-							saadFrame.DATA.bit.DATA_H = sciRxC[2];
-
-							if(saadFrame.DATA.all==0xAAAA)
-								SAAD_CTRL_ALL.POWER = 1;
-							else
-								if(saadFrame.DATA.all==0xBBBB)
-									SAAD_CTRL_ALL.POWER = 0;
-
-							saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
-							if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
+							saadFrameResive.DATA.bit.DATA_L = sciRxC[1];
+							saadFrameResive.DATA.bit.DATA_H = sciRxC[2];
+							saadFrameResive.POSITION.all = saadFrameResive.DATA.all;
+							motor0.phasePosition =  (((float)saadFrameResive.DATA.all)*0.02);
+							mode = 2;
+							SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV = 0;
+							setSci = 1;
+							saadFrameResive.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
+							if(saadFrameResive.CTRLSUM.bit.CTRLSUM_H!=crc8DATA(saadFrameResive))
 								sciErrorCntCtrlSum++;
-							sendSCI = 1;
+							sendSCI = 2;
 						}
 						else
-							if(sciRxC[0]==0x30)
+							if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0x70)
 							{
-								saadFrame.DATA.bit.DATA_L = sciRxC[1];
-								saadFrame.DATA.bit.DATA_H = sciRxC[2];
+								saadFrameResive.DATA.bit.DATA_L = sciRxC[1];
+								saadFrameResive.DATA.bit.DATA_H = sciRxC[2];
+								mode = 3;
+								temp = ((float)saadFrameResive.DATA.all)*0.02;
+								vel = ((float)saadFrameResive.DATA.all)*0.02;
+								motor0.aceleration = 500.;
+								acel = 500.; //(deg per sec) per sec
+								time = 0;
+								timeUp = vel/acel;
 
-								makeTest();
-
-								saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
-								if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
+								saadFrameResive.VELOCITY.all = saadFrameResive.DATA.all;
+								SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV = 0;
+								setSci = 1;
+								saadFrameResive.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
+								if(saadFrameResive.CTRLSUM.bit.CTRLSUM_H!=crc8DATA(saadFrameResive))
 									sciErrorCntCtrlSum++;
-								sendSCI = 1;
+								sendSCI = 2;
 							}
 							else
-								if(sciRxC[0]==0x50)
+								if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0x20)
 								{
-									saadFrame.DATA.bit.DATA_L = sciRxC[1];
-									saadFrame.DATA.bit.DATA_H = sciRxC[2];
+									saadFrameResive.DATA.bit.DATA_L = sciRxC[1];
+									saadFrameResive.DATA.bit.DATA_H = sciRxC[2];
 
-									motor0.phasePosition =  (((float)saadFrame.DATA.all)*0.02);
-									mode = 2;
-									SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV = 0;
-									setSci = 1;
-									saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
-									if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
+									if(saadFrameResive.DATA.all==0xAAAA)
+										SAAD_CTRL_ALL.CTRL.bit.WORK = 1;
+									else
+										if(saadFrameResive.DATA.all==0xBBBB)
+											SAAD_CTRL_ALL.CTRL.bit.WORK = 0;
+									saadFrameResive.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
+									if(saadFrameResive.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrameResive))
 										sciErrorCntCtrlSum++;
-									sendSCI = 2;
+									sendSCI = 1;
 								}
-								else
-									if(sciRxC[0]==0x70)
-									{
-										saadFrame.DATA.bit.DATA_L = sciRxC[1];
-										saadFrame.DATA.bit.DATA_H = sciRxC[2];
-										mode = 3;
-										temp = ((float)saadFrame.DATA.all)*0.02;
-										motor0.velocity = ((float)saadFrame.DATA.all)*0.02;
-										SAAD_CTRL_ALL.CTRL.bit.LOCK_DEV = 0;
-//										temp = (float) (saadFrame.DATA.all*PI/180./10.);
-										setSci = 1;
-										saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
-										if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
-											sciErrorCntCtrlSum++;
-										sendSCI = 2;
-									}
-								else
-									if(sciRxC[0]==0x20)
-									{
-										saadFrame.DATA.bit.DATA_L = sciRxC[1];
-										saadFrame.DATA.bit.DATA_H = sciRxC[2];
-
-										if(saadFrame.DATA.all==0xAAAA)
-											SAAD_CTRL_ALL.CTRL.bit.WORK = 1;
-										else
-											if(saadFrame.DATA.all==0xBBBB)
-												SAAD_CTRL_ALL.CTRL.bit.WORK = 0;
-										saadFrame.CTRLSUM.bit.CTRLSUM_H = sciRxC[3];
-										if(saadFrame.CTRLSUM.bit.CTRLSUM_H!=crc8POS(saadFrame))
-											sciErrorCntCtrlSum++;
-										sendSCI = 1;
-									}
 	}
 
-	if((timer2cnt>2)|(sendSCI == 1)|(sendSCI == 2))
+	if((timer1cnt>2)|(sendSCI == 1)|(sendSCI == 2))
 	{
-		timer2cnt = 0;
+		timer1cnt = 0;
 		if(sendSCI>0)
 			if(sciaRegs->SCIFFTX.bit.TXFFST == 0)
 			{
 				frameCountT++;
-				saadFrame.POSITION.all++;
-				if(saadFrame.COMMAND_BYTE.bit.COMMAND_H==0xB0)
+				if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0xC0)
 				{
-					saadFrame.COMMAND_BYTE.bit.COMMAND_H++;
-					saadFrame.DATA.bit.DATA_L = saadFrame.POSITION.bit.POSITION_L;
-					saadFrame.DATA.bit.DATA_H = saadFrame.POSITION.bit.POSITION_H;
-					sciaWrite(saadFrame.COMMAND_BYTE.bit.COMMAND_H);
-					sciaWrite(saadFrame.DATA.bit.DATA_L);
-					sciaWrite(saadFrame.DATA.bit.DATA_H);
+					sciaWrite(saadFrameSend.COMMAND_BYTE.bit.COMMAND_H);
+					sciaWrite(saadFrameSend.DATA.bit.DATA_L);
+					sciaWrite(saadFrameSend.DATA.bit.DATA_H);
 				}
 				else
-					if(saadFrame.COMMAND_BYTE.bit.COMMAND_H==0xA0)
+					if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0x80)
 					{
-						saadFrame.COMMAND_BYTE.bit.COMMAND_H++;
-						saadFrame.DATA.bit.DATA_L = saadFrame.VELOCITY.bit.VELOCITY_L;
-						saadFrame.DATA.bit.DATA_H = saadFrame.VELOCITY.bit.VELOCITY_H;
-						sciaWrite(saadFrame.COMMAND_BYTE.bit.COMMAND_H);
-						sciaWrite(saadFrame.DATA.bit.DATA_L);
-						sciaWrite(saadFrame.DATA.bit.DATA_H);
+						sciaWrite(saadFrameSend.COMMAND_BYTE.bit.COMMAND_H);
+						sciaWrite(saadFrameSend.DATA.bit.DATA_L);
+						sciaWrite(saadFrameSend.DATA.bit.DATA_H);
 					}
 					else
-						if(saadFrame.COMMAND_BYTE.bit.COMMAND_H==0xC0)
+						if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0x10)
 						{
-							saadFrame.COMMAND_BYTE.bit.COMMAND_H++;
-							sciaWrite(saadFrame.COMMAND_BYTE.bit.COMMAND_H);
-							sciaWrite(saadFrame.DATA.bit.DATA_L);
-							sciaWrite(saadFrame.DATA.bit.DATA_H);
+							saadFrameSend.DATA.bit.DATA_L = SAAD_CTRL_ALL.CTRL.all;
+							sciaWrite(saadFrameSend.COMMAND_BYTE.bit.COMMAND_H);
+							sciaWrite(saadFrameSend.DATA.bit.DATA_L);
+							sciaWrite(saadFrameSend.DATA.bit.DATA_H);
 						}
 						else
-							if(saadFrame.COMMAND_BYTE.bit.COMMAND_H==0x80)
+							if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0x30)
 							{
-								saadFrame.COMMAND_BYTE.bit.COMMAND_H++;
-								sciaWrite(saadFrame.COMMAND_BYTE.bit.COMMAND_H);
-								sciaWrite(saadFrame.DATA.bit.DATA_L);
-								sciaWrite(saadFrame.DATA.bit.DATA_H);
+								if(saadTests.all == 0x00)
+									saadFrameSend.COMMAND_BYTE.bit.COMMAND_H = 0x31;
+								else
+								{
+									saadFrameSend.COMMAND_BYTE.bit.COMMAND_H = 0x32;
+									saadFrameSend.DATA.bit.DATA_L = saadTests.all;
+								}
+								sciaWrite(saadFrameSend.COMMAND_BYTE.bit.COMMAND_H);
+								sciaWrite(saadFrameSend.DATA.bit.DATA_L);
+								sciaWrite(saadFrameSend.DATA.bit.DATA_H);
 							}
 							else
-								if(saadFrame.COMMAND_BYTE.bit.COMMAND_H==0x10)
+//#ifdef BETA
+								if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0x50)
+//#endif
+//#ifdef EPSILON
+//								if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0x60)
+//#endif
 								{
-									saadFrame.COMMAND_BYTE.bit.COMMAND_H++;
-									saadFrame.DATA.bit.DATA_L = SAAD_CTRL_ALL.CTRL.all;
-									sciaWrite(saadFrame.COMMAND_BYTE.bit.COMMAND_H);
-									sciaWrite(saadFrame.DATA.bit.DATA_L);
-									sciaWrite(saadFrame.DATA.bit.DATA_H);
+									saadFrameSend.DATA.all = saadFrameSend.POSITION.all;
+									sciaWrite(saadFrameSend.COMMAND_BYTE.bit.COMMAND_H);
+									sciaWrite(saadFrameSend.DATA.bit.DATA_L);
+									sciaWrite(saadFrameSend.DATA.bit.DATA_H);
 								}
 								else
-									if(saadFrame.COMMAND_BYTE.bit.COMMAND_H==0x30)
+									if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0x70)
 									{
-										if(saadTests.all == 0x00)
-											saadFrame.COMMAND_BYTE.bit.COMMAND_H = 0x31;
-										else
-											saadFrame.COMMAND_BYTE.bit.COMMAND_H = 0x32;
-										saadFrame.DATA.bit.DATA_L = saadTests.all;
-										sciaWrite(saadFrame.COMMAND_BYTE.bit.COMMAND_H);
-										sciaWrite(saadFrame.DATA.bit.DATA_L);
-										sciaWrite(saadFrame.DATA.bit.DATA_H);
+//										saadFrameSend.DATA.all = saadFrameSend.POSITION.all;
+										saadFrameSend.DATA.all = saadFrameSend.VELOCITY.all;
+//										saadFrameSend.DATA.all = (short) (motor0.velocity);
+										sciaWrite(saadFrameSend.COMMAND_BYTE.bit.COMMAND_H);
+										sciaWrite(saadFrameSend.DATA.bit.DATA_L);
+										sciaWrite(saadFrameSend.DATA.bit.DATA_H);
 									}
 									else
-										if(saadFrame.COMMAND_BYTE.bit.COMMAND_H==0x50)
+										if(saadFrameResive.COMMAND_BYTE.bit.COMMAND_H==0x20)
 										{
-//											saadFrame.COMMAND_BYTE.bit.COMMAND_H++;
-//											saadFrame.DATA.all = saadFrame.POSITION.all;
-											saadFrame.DATA.all = saadFrame.POSITION.all;
-											sciaWrite(saadFrame.COMMAND_BYTE.bit.COMMAND_H+1);
-											sciaWrite(saadFrame.DATA.bit.DATA_L);
-											sciaWrite(saadFrame.DATA.bit.DATA_H);
+											sciaWrite(saadFrameSend.COMMAND_BYTE.bit.COMMAND_H);
+											sciaWrite(saadFrameSend.DATA.bit.DATA_L);
+											sciaWrite(saadFrameSend.DATA.bit.DATA_H);
 										}
-										else
-											if(saadFrame.COMMAND_BYTE.bit.COMMAND_H==0x70)
-											{
-//												saadFrame.COMMAND_BYTE.bit.COMMAND_H++;
-//												saadFrame.DATA.all = saadFrame.POSITION.all;
-												saadFrame.DATA.all = saadFrame.VELOCITY.all;
-												sciaWrite(saadFrame.COMMAND_BYTE.bit.COMMAND_H+1);
-												sciaWrite(saadFrame.DATA.bit.DATA_L);
-												sciaWrite(saadFrame.DATA.bit.DATA_H);
-											}
-										else
-											if(saadFrame.COMMAND_BYTE.bit.COMMAND_H==0x20)
-											{
-												saadFrame.COMMAND_BYTE.bit.COMMAND_H++;
-												sciaWrite(saadFrame.COMMAND_BYTE.bit.COMMAND_H);
-												sciaWrite(saadFrame.DATA.bit.DATA_L);
-												sciaWrite(saadFrame.DATA.bit.DATA_H);
-											}
 
-				sciaWrite(crc8DATA(saadFrame));
+				sciaWrite(crc8DATA(saadFrameSend));
 				if(sendSCI == 1)
 					sendSCI = 0;
 			}
@@ -638,7 +639,7 @@ __interrupt void SCI_RX_isr(void)
 __interrupt void SPI_RX_isr(void)
 {
 	GPIO_toggle(gpioS, LED1);
-//	if(spiaRegs->SPIFFRX.bit.RXFFST == 4)
+	//	if(spiaRegs->SPIFFRX.bit.RXFFST == 4)
 	{
 		spiData->xH = spiaRegs->SPIRXBUF;
 		spiData->xL = spiaRegs->SPIRXBUF;
@@ -653,10 +654,10 @@ __interrupt void SPI_RX_isr(void)
 	if(setSci == 1)
 	{
 #ifdef BETA
-		saadFrame.VELOCITY.all = spiData->xData;
+		saadFrameSend.VELOCITY.all = spiData->xData;
 #endif
 #ifdef EPSILON
-		saadFrame.VELOCITY.all = spiData->yData;
+		saadFrameSend.VELOCITY.all = spiData->yData;
 #endif
 
 	}
@@ -696,7 +697,7 @@ void zeroStart(int index)
 		motor1.polesCount = 10.;
 
 		motor0.leftPos = 19.;
-		motor0.rightPos = -19.;
+		motor0.rightPos = -18.;
 	}
 	else
 		if(index == 1)
@@ -722,7 +723,7 @@ void zeroStart(int index)
 			motor0.rightPos = -22.;
 		}
 
-	timer2cnt = 0;
+	timer1cnt = 0;
 	stepsCount = 10;
 
 	for(i = 0; i<1000;)i++;
@@ -762,12 +763,19 @@ void zeroStart(int index)
 	motor1.phasePosStep = 0;
 
 	notEnd = 1;
+	vel = 0;
 
-	saadFrame.COMMAND_BYTE.all = 0;
-	saadFrame.CTRLSUM.all = 0;
-	saadFrame.POSITION.all = 0;
-	saadFrame.VELOCITY.all = 0;
-	saadFrame.START_BIT.all = 0;
+	saadFrameSend.COMMAND_BYTE.all = 0;
+	saadFrameSend.CTRLSUM.all = 0;
+	saadFrameSend.POSITION.all = 0;
+	saadFrameSend.VELOCITY.all = 0;
+	saadFrameSend.START_BIT.all = 0;
+
+	saadFrameResive.COMMAND_BYTE.all = 0;
+	saadFrameResive.CTRLSUM.all = 0;
+	saadFrameResive.POSITION.all = 0;
+	saadFrameResive.VELOCITY.all = 0;
+	saadFrameResive.START_BIT.all = 0;
 
 	SAAD_CTRL_ALL.CTRL.all = 0;
 	SAAD_CTRL_ALL.POWER = 0;
