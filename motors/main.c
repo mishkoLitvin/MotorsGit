@@ -85,7 +85,7 @@ float alpha, alpha0;
 int mode;
 long mode1cnt, mode3cnt;
 float acel, timeUp, vel, vel0, time;
-short stabilize;
+short stabilize, stabilizeFlag;
 
 Uint32 sciErrorCntCtrlSum, sciErrorCntFrameDown, sciErrorParity,
 frameCountR, frameCountT;
@@ -256,9 +256,22 @@ __interrupt void cpu_timer0_isr(void)
 	float deltaPhT = (((motor0.velocity/180.)*PI)*5E-4)*motor0.polesCount;
 
 	if(((fabs(motor0.phasePosition-alpha))<2)&(mode==2))
+	{
 		stabilize = 1;
+		if(stabilizeFlag == 1)
+		{
+			motor0.phaseTimeStabilize = motor0.phaseTime
+					+(motor0.phasePosition-alpha)*motor0.polesCount/180.*PI;
+			motor1.phaseTimeStabilize = motor1.phaseTime
+					+(motor1.phasePosition-alpha)*motor0.polesCount/180.*PI;
+			stabilizeFlag = 0;
+		}
+	}
 	else
+	{
 		stabilize = 0;
+		stabilizeFlag = 1;
+	}
 
 
 
@@ -276,8 +289,8 @@ __interrupt void cpu_timer0_isr(void)
 			motor1.phaseTime += deltaPhT*0.05;
 #endif
 #ifdef BETA
-			motor0.phaseTime += deltaPhT*0.02;
-			motor1.phaseTime += deltaPhT*0.02;
+			motor0.phaseTime = motor0.phaseTimeStabilize+deltaPhT*0.02;
+			motor1.phaseTime = motor0.phaseTimeStabilize+deltaPhT*0.02;
 #endif
 
 		}

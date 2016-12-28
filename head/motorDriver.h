@@ -16,6 +16,7 @@ typedef struct MotorData_
 {
 	int index;
 	float phasePosition;
+	float phaseTimeStabilize;
 	float phasePosStep;
 	float phaseTime;
 	float phaseZero;
