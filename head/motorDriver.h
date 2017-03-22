@@ -15,17 +15,20 @@
 typedef struct MotorData_
 {
 	int index;
-	float phasePosition;
-	float phaseTimeStabilize;
+	float position;
 	float phasePosStep;
 	float phaseTime;
 	float phaseZero;
-	int pwmData, pwmData0, pwmData1, pwmData2;
+	unsigned int pwmData;
 	int direction;
 	float velocity;
 	float aceleration;
 	float polesCount;
 	float leftPos, rightPos;
+	float leftPosScan, rightPosScan;
+	float scanVel;
+	float scanDelta;
+	PWMValues pwmValues;
 
 }MotorData ;
 
@@ -36,10 +39,6 @@ PWMValues calcPWM(MotorData *motorData)
 	val.pwmV[0] = motorData->pwmData*(cos(motorData->phaseTime)+1.0)/2.0;
 	val.pwmV[1] = motorData->pwmData*(cos(motorData->phaseTime+2.0*PI/3.0*motorData->direction)+1.0)/2.0;
 	val.pwmV[2] = motorData->pwmData*(cos(motorData->phaseTime-2.0*PI/3.0*motorData->direction)+1.0)/2.0;
-
-	motorData->pwmData0 = val.pwmV[0];
-	motorData->pwmData1 = val.pwmV[1];
-	motorData->pwmData2 = val.pwmV[2];
 
 
 

@@ -197,24 +197,26 @@ void AMCconf(int index)
 	mcbsp_write(0x01, 0x0000);//config control parametr register #1
 //	mcbsp_write(0x02, 0x0F7C);//config sinc filter parametr register #1
 	mcbsp_write(0x02, 0x0F7C);//config sinc filter parametr register #1
-//	mcbsp_write(0x03, 0x430F);//config integrator parametr register #1
 	if(index == 0)
-		mcbsp_write(0x03, 0x4B0F);//config integrator parametr register #1
+		mcbsp_write(0x03, 0x630F);//config integrator parametr register #1
 	if(index == 1)
-		mcbsp_write(0x03, 0x4B0F);//config integrator parametr register #1
+//		mcbsp_write(0x03, 0x430F);//config integrator parametr register #1
+		mcbsp_write(0x03, 0x630F);//config integrator parametr register #1
 
 	mcbsp_write(0x07, 0x0000);//config control parametr register #2
 //	mcbsp_write(0x08, 0x0F7C);//config sinc filter parametr register #2
 	mcbsp_write(0x08, 0x0F7C);//config sinc filter parametr register #2
-//	mcbsp_write(0x09, 0x430F);//config integrator parametr register #2
 	if(index == 0)
-		mcbsp_write(0x09, 0x4B0F);//config integrator parametr register #2
+		mcbsp_write(0x09, 0x630F);//config integrator parametr register #2
 	if(index == 1)
-		mcbsp_write(0x09, 0x4B0F);//config integrator parametr register #2
+//		mcbsp_write(0x09, 0x430F);//config integrator parametr register #2
+		mcbsp_write(0x09, 0x630F);//config integrator parametr register #2
 
 	//enable power part of PS
 	GPIO_setHigh(gpioS, PS_A0);
 	GPIO_setLow(gpioS, PS_A1);
+//	GPIO_setLow(gpioS, PS_A0);
+//	GPIO_setLow(gpioS, PS_A1);
 
 	mcbsp_write(0x1B, 0x0E00);//config clock divider register to calibrate demodulator #1
 	for(j = 0; j<5000; ) j++;

@@ -43,7 +43,8 @@ void sciaSetup()
 	sciaRegs->SCICTL2.bit.RXBKINTENA =0;
 
     sciaRegs->SCIHBAUD    =0x0000;
-    sciaRegs->SCILBAUD    =0x0008;
+    sciaRegs->SCILBAUD    =0x0008;//1 250 000
+//    sciaRegs->SCILBAUD    =0x000E;//750 000
 	sciaRegs->SCICCR.bit.LOOPBKENA =0; // Enable loop back
 	sciaRegs->SCICTL1.all =0x0023;     // Relinquish SCI from Reset
 

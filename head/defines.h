@@ -22,10 +22,10 @@
 #define MOTOR_1_FAULT GPIO_Number_31
 #define MOTOR_2_FAULT GPIO_Number_16
 
-#define LD_EL1 GPIO_Number_43
-#define LD_EL2 GPIO_Number_44
-#define LD_SENS_1 GPIO_Number_50
-#define LD_SENS_2 GPIO_Number_51
+#define LD_STEP GPIO_Number_43
+#define LD_DIR GPIO_Number_44
+#define LD_SLEEP GPIO_Number_50
+#define LD_FAULT GPIO_Number_51
 
 
 #define Device_cal (void   (*)(void))0x3D7C80

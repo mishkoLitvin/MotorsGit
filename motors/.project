@@ -56,9 +56,9 @@
 			<locationURI>PARENT-1-PROJECT_LOC/head/motorDriver.h</locationURI>
 		</link>
 		<link>
-			<name>pid_reg3.c</name>
+			<name>pid_reg3.h</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/src/pid_reg3.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/head/pid_reg3.h</locationURI>
 		</link>
 		<link>
 			<name>spiDriverMAX.h</name>

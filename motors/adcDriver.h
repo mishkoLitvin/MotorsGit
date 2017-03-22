@@ -23,7 +23,7 @@ ADC_RESULT_REGS* adcResRegs;
 
 void adcInit();
 void ADC_config();
-uint16_t adcRead(int ch);
+int adcRead(int ch);
 
 void adcInit()
 {
@@ -51,7 +51,7 @@ void ADC_config()
 	//	DELAY_US(ADC_usDELAY);         // Delay before converting ADC channels
 
 	EALLOW;
-	adcRegs->ADCCTL2.bit.CLKDIV2EN = 0;
+	adcRegs->ADCCTL2.bit.CLKDIV2EN = 1;
 	adcRegs->ADCCTL2.bit.CLKDIV4EN = 0;
 	EDIS;
 
@@ -80,47 +80,47 @@ void ADC_config()
 	adcRegs->ADCSOC14CTL.bit.CHSEL 	= 14;    // set SOC1 channel select to ADCINA1
 	adcRegs->ADCSOC15CTL.bit.CHSEL 	= 15;    // set SOC1 channel select to ADCINA1
 
-	adcRegs->ADCSOC0CTL.bit.TRIGSEL = 1;    // set SOC0 start trigger on timer0
-	adcRegs->ADCSOC1CTL.bit.TRIGSEL = 1;    // set SOC1 start trigger on timer0
-	adcRegs->ADCSOC2CTL.bit.TRIGSEL = 1;    // set SOC2 start trigger on timer0
-	adcRegs->ADCSOC3CTL.bit.TRIGSEL = 1;    // set SOC3 start trigger on timer0
-	adcRegs->ADCSOC4CTL.bit.TRIGSEL = 1;    // set SOC4 start trigger on timer0
+	adcRegs->ADCSOC0CTL.bit.TRIGSEL = 5;    // set SOC0 start trigger on timer0
+	adcRegs->ADCSOC1CTL.bit.TRIGSEL = 5;    // set SOC1 start trigger on timer0
+	adcRegs->ADCSOC2CTL.bit.TRIGSEL = 5;    // set SOC2 start trigger on timer0
+	adcRegs->ADCSOC3CTL.bit.TRIGSEL = 5;    // set SOC3 start trigger on timer0
+	adcRegs->ADCSOC4CTL.bit.TRIGSEL = 5;    // set SOC4 start trigger on timer0
 	adcRegs->ADCSOC5CTL.bit.TRIGSEL = 1;    // set SOC5 start trigger on timer0
-	adcRegs->ADCSOC6CTL.bit.TRIGSEL = 1;    // set SOC6 start trigger on timer0
+	adcRegs->ADCSOC6CTL.bit.TRIGSEL = 5;    // set SOC6 start trigger on timer0
 	adcRegs->ADCSOC7CTL.bit.TRIGSEL = 1;    // set SOC7 start trigger on timer0
-	adcRegs->ADCSOC8CTL.bit.TRIGSEL = 1;    // set SOC8 start trigger on timer0
-	adcRegs->ADCSOC9CTL.bit.TRIGSEL = 1;    // set SOC9 start trigger on timer0
-	adcRegs->ADCSOC10CTL.bit.TRIGSEL = 1;   // set SOC10 start trigger on timer0
-	adcRegs->ADCSOC11CTL.bit.TRIGSEL = 1;   // set SOC11 start trigger on timer0
-	adcRegs->ADCSOC12CTL.bit.TRIGSEL = 1;   // set SOC12 start trigger on timer0
+	adcRegs->ADCSOC8CTL.bit.TRIGSEL = 5;    // set SOC8 start trigger on timer0
+	adcRegs->ADCSOC9CTL.bit.TRIGSEL = 5;    // set SOC9 start trigger on timer0
+	adcRegs->ADCSOC10CTL.bit.TRIGSEL = 5;   // set SOC10 start trigger on timer0
+	adcRegs->ADCSOC11CTL.bit.TRIGSEL = 5;   // set SOC11 start trigger on timer0
+	adcRegs->ADCSOC12CTL.bit.TRIGSEL = 5;   // set SOC12 start trigger on timer0
 	adcRegs->ADCSOC13CTL.bit.TRIGSEL = 1;   // set SOC13 start trigger on timer0
-	adcRegs->ADCSOC14CTL.bit.TRIGSEL = 1;   // set SOC14 start trigger on timer0
+	adcRegs->ADCSOC14CTL.bit.TRIGSEL = 5;   // set SOC14 start trigger on timer0
 	adcRegs->ADCSOC15CTL.bit.TRIGSEL = 1;   // set SOC15 start trigger on timer0
 
-	adcRegs->ADCSOC0CTL.bit.ACQPS 	= 6;	// set SOC0 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
-	adcRegs->ADCSOC1CTL.bit.ACQPS 	= 6;	// set SOC1 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
-	adcRegs->ADCSOC2CTL.bit.ACQPS 	= 6;	// set SOC2 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
-	adcRegs->ADCSOC3CTL.bit.ACQPS 	= 6;	// set SOC3 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
-	adcRegs->ADCSOC4CTL.bit.ACQPS 	= 6;	// set SOC4 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
-	adcRegs->ADCSOC5CTL.bit.ACQPS 	= 6;	// set SOC5 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
-	adcRegs->ADCSOC6CTL.bit.ACQPS 	= 6;	// set SOC6 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
-	adcRegs->ADCSOC7CTL.bit.ACQPS 	= 6;	// set SOC7 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
-	adcRegs->ADCSOC8CTL.bit.ACQPS 	= 6;	// set SOC8 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
-	adcRegs->ADCSOC9CTL.bit.ACQPS 	= 6;	// set SOC9 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
-	adcRegs->ADCSOC10CTL.bit.ACQPS 	= 6;	// set SOC10 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
-	adcRegs->ADCSOC11CTL.bit.ACQPS 	= 6;	// set SOC11 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
-	adcRegs->ADCSOC12CTL.bit.ACQPS 	= 6;	// set SOC12 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
-	adcRegs->ADCSOC13CTL.bit.ACQPS 	= 6;	// set SOC13 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
-	adcRegs->ADCSOC14CTL.bit.ACQPS 	= 6;	// set SOC14 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
-	adcRegs->ADCSOC15CTL.bit.ACQPS 	= 6;	// set SOC15 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC0CTL.bit.ACQPS 	= 8;	// set SOC0 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC1CTL.bit.ACQPS 	= 8;	// set SOC1 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC2CTL.bit.ACQPS 	= 8;	// set SOC2 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC3CTL.bit.ACQPS 	= 8;	// set SOC3 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC4CTL.bit.ACQPS 	= 8;	// set SOC4 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC5CTL.bit.ACQPS 	= 8;	// set SOC5 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC6CTL.bit.ACQPS 	= 8;	// set SOC6 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC7CTL.bit.ACQPS 	= 8;	// set SOC7 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC8CTL.bit.ACQPS 	= 8;	// set SOC8 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC9CTL.bit.ACQPS 	= 8;	// set SOC9 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC10CTL.bit.ACQPS 	= 8;	// set SOC10 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC11CTL.bit.ACQPS 	= 8;	// set SOC11 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC12CTL.bit.ACQPS 	= 8;	// set SOC12 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC13CTL.bit.ACQPS 	= 8;	// set SOC13 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC14CTL.bit.ACQPS 	= 8;	// set SOC14 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
+	adcRegs->ADCSOC15CTL.bit.ACQPS 	= 8;	// set SOC15 S/H Window to 7 ADC Clock Cycles, (6 ACQPS plus 1)
 	EDIS;
 
 }
 
 
-uint16_t adcRead(int ch)
+int adcRead(int ch)
 {
-	adcRegs->ADCSOCFRC1.all = (1<<ch); // Sample ADC input
+//	adcRegs->ADCSOCFRC1.all = (1<<ch); // Sample ADC input
 
 	switch (ch) {
 	case 0:

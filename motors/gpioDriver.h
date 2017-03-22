@@ -125,18 +125,18 @@ void setupGPIOs()
 	  GPIO_setDirection(gpioS,LED2,GPIO_Direction_Output);
 
 	  // Lock Device
-	  GPIO_setMode(gpioS,LD_EL1,GPIO_43_Mode_GeneralPurpose);
-	  GPIO_setLow(gpioS,LD_EL1);
-	  GPIO_setDirection(gpioS,LD_EL1,GPIO_Direction_Output);
-	  GPIO_setMode(gpioS,LD_EL2,GPIO_44_Mode_GeneralPurpose);
-	  GPIO_setLow(gpioS,LD_EL2);
-	  GPIO_setDirection(gpioS,LD_EL2,GPIO_Direction_Output);
-	  GPIO_setMode(gpioS,LD_SENS_1,GPIO_50_Mode_GeneralPurpose);
-	  GPIO_setLow(gpioS,LD_SENS_1);
-	  GPIO_setDirection(gpioS,LD_SENS_1,GPIO_Direction_Input);
-	  GPIO_setMode(gpioS,LD_SENS_2,GPIO_51_Mode_GeneralPurpose);
-	  GPIO_setLow(gpioS,LD_SENS_2);
-	  GPIO_setDirection(gpioS,LD_SENS_2,GPIO_Direction_Input);
+	  GPIO_setMode(gpioS,LD_STEP,GPIO_43_Mode_GeneralPurpose);
+	  GPIO_setHigh(gpioS,LD_STEP);
+	  GPIO_setDirection(gpioS,LD_STEP,GPIO_Direction_Output);
+	  GPIO_setMode(gpioS,LD_DIR,GPIO_44_Mode_GeneralPurpose);
+	  GPIO_setHigh(gpioS,LD_DIR);
+	  GPIO_setDirection(gpioS,LD_DIR,GPIO_Direction_Output);
+	  GPIO_setMode(gpioS,LD_SLEEP,GPIO_50_Mode_GeneralPurpose);
+	  GPIO_setHigh(gpioS,LD_SLEEP);
+	  GPIO_setDirection(gpioS,LD_SLEEP,GPIO_Direction_Output);
+	  GPIO_setMode(gpioS,LD_FAULT,GPIO_51_Mode_GeneralPurpose);
+	  GPIO_setHigh(gpioS,LD_FAULT);
+	  GPIO_setDirection(gpioS,LD_FAULT,GPIO_Direction_Input);
 
 	  //PS_A0
 	  GPIO_setMode(gpioS,PS_A0,GPIO_52_Mode_GeneralPurpose);

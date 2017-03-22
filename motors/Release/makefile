@@ -13,7 +13,6 @@ $(GEN_CMDS__FLAG) \
 "./gpio.obj" \
 "./main.obj" \
 "./memCopy.obj" \
-"./pid_reg3.obj" \
 "../F28069.cmd" \
 -l"libc.a" \
 
@@ -145,8 +144,8 @@ motors.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "clk.pp" "gpio.pp" "main.pp" "memCopy.pp" "pid_reg3.pp" 
-	-$(RM) "F2806x_CodeStartBranch.obj" "clk.obj" "gpio.obj" "main.obj" "memCopy.obj" "pid_reg3.obj" 
+	-$(RM) "clk.pp" "gpio.pp" "main.pp" "memCopy.pp" 
+	-$(RM) "F2806x_CodeStartBranch.obj" "clk.obj" "gpio.obj" "main.obj" "memCopy.obj" 
 	-$(RM) "F2806x_CodeStartBranch.pp" 
 	-@echo 'Finished clean'
 	-@echo ' '

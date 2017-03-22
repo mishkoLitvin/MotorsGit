@@ -31,14 +31,15 @@ typedef struct SPIData_{
 	int selfTestRes;
 	int selfTestData[4];
 
-	long POWER_CFG, SENSE_CFG1, SENSE_CFG2, DR_CFG;
+	long POWER_CFG, SENSE_CFG1, SENSE_CFG2, SENSE_CFG3, DR_CFG;
 
 
 }SPIData;
 
 //extern
 SPIData *spiData;
-int delay = 10, counter;
+int yData, xData;
+int delay = 200, counter;
 
 void spiInit()
 {
@@ -51,7 +52,9 @@ static inline void spiSetup()
 	spiaRegs->SPICCR.all =0x004F;	             // Reset on, rising edge, 16-bit char bits
 	spiaRegs->SPICTL.all =0x0006;    		     // Enable master mode, normal phase,
 												// enable talk, and SPI int disabled.
-	spiaRegs->SPIBRR =0x0018;
+//	spiaRegs->SPIBRR =0x0018;
+	spiaRegs->SPIBRR =0x0070;
+
 	spiaRegs->SPIPRI.bit.TRIWIRE = 0;			//4-wire mode
 	spiaRegs->SPIPRI.bit.STEINV = 0;
 	spiaRegs->SPIPRI.bit.FREE = 1;                // Set so breakpoints don't disturb xmission
@@ -84,14 +87,14 @@ static inline void setSPIData(SPIData* spiD)
 	spiData = spiD;
 }
 
-static inline void spiWrite(int addr, int byte)
+static inline Uint16 spiWrite(int addr, int byte)
 {
 	addr = (addr<<8)|0x4000;
 	addr = addr|byte;
 	spiaRegs->SPITXBUF = addr;
 	spiaRegs->SPISTS.bit.BUFFULL_FLAG = 1;
 	spiWait();
-
+	return spiaRegs->SPIRXBUF;
 }
 
 static inline void spiWriteFF(int addr, int byte)
@@ -174,7 +177,7 @@ static inline void gyroUpdateData()
 
 static inline int gyroVerify()
 {
-	spiDisableFF();
+//	spiDisableFF();
 
 	spiData->spiID = spiRead( 0x20);
 
@@ -183,8 +186,9 @@ static inline int gyroVerify()
 		spiWrite( 0x00, 0x0F);
 	spiData->SENSE_CFG1 = spiRead( 0x01);
 	spiData->SENSE_CFG2 = spiRead( 0x02);
+	spiData->SENSE_CFG3 = spiRead( 0x03);
 	spiData->DR_CFG = spiRead( 0x13);
-	spiSetupFF();
+//	spiSetupFF();
 	return spiData->spiID;
 }
 
@@ -226,7 +230,7 @@ static inline void spiGyroConf()
 	spiWrite( 0x21, 0x00);//bank select
 	spiWrite( 0x00, 0x07);//power mode
 	spiWrite( 0x01, 0x28);//filter enable/0x28-100Hz optical stabilization disable
-	spiWrite( 0x02, 0x00);//data update freq
+	spiWrite( 0x02, 0x02);//data update freq //!!!!!!!
 	spiWrite( 0x03, 0x00);//filtrer enabling
 	spiWrite( 0x13, 0x00);//data reset & temperature sensor enabling
 	spiWrite( 0x14, 0x20);//interrupt INT1 enabling
@@ -235,17 +239,17 @@ static inline void spiGyroConf()
 //	spiWrite( 0x0B, 0x10);//int1 config
 //	spiWrite( 0x10, 0x80);//int1 allowed
 //	spiWrite( 0x11, 0x00);//int2 disabling
-	spiWrite( 0x21, 0x00);//bank sel
+//	spiWrite( 0x21, 0x00);//bank sel
 
 //	gyroSelfTest();
 
 	spiWrite( 0x00, 0x07);//power mode
-	spiWrite( 0x01, 0x11);//self tedt dis, low freq filter 10Hz, optical stab en, max speed 125dps
+	spiWrite( 0x01, 0x29);//self tedt dis, low freq filter 10Hz, optical stab en, max speed 125dps
 //	spiWrite( 0x01, 0x3D);//self tedt dis, low freq filter 400Hz, optical stab en, max speed 125dps
 //	spiWrite( 0x01, 0x29);//self tedt dis, low freq filter 100Hz, optical stab en, max speed 125dps
 	spiWrite( 0x00, 0x0F);//power mode
 
 //	spiWrite( 0x03, 0x3F);//lowpass filter DISAbling, highpass filter enabling
 
-	gyroVerify();
+//	gyroVerify();
 }

@@ -94,8 +94,8 @@ void interruptSEnable()
 void interrupsCpuSetup(void)
 {
 	IER |= M_INT1;
-	IER |= M_INT9;
-	IER |= M_INT6;
+//	IER |= M_INT9;
+//	IER |= M_INT6;
 	IER |= M_INT13;
 	IER |= M_INT14;
 
@@ -106,11 +106,11 @@ void interrupsCpuSetup(void)
 	xIntruptRegs->XINT2CR.bit.POLARITY = 01;
 
 
-	interrupS->PIEIER1.bit.INTx4 = 0;
-	interrupS->PIEIER1.bit.INTx5 = 0;
+//	interrupS->PIEIER1.bit.INTx4 = 0;
+//	interrupS->PIEIER1.bit.INTx5 = 0;
 	interrupS->PIEIER1.bit.INTx7 = 1;
-	interrupS->PIEIER6.bit.INTx1 = 1;
-	interrupS->PIEIER9.bit.INTx1 = 1;
+//	interrupS->PIEIER6.bit.INTx1 = 1;
+//	interrupS->PIEIER9.bit.INTx1 = 1;
 
 //	interrupS->PIEIER1.bit.INTx1 = 1;
 
